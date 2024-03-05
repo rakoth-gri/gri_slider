@@ -113,7 +113,7 @@ Types of values that can be assigned to each of the props:
 - **comment** --> string | null | undefined
 - **controlImg** --> string | null | undefined
 
-#### 'options' - the optional property for customizing styles of main container (<section class="gri-slider"></section>). <br> This is a javascript CSSStyleDeclaration object kind of:
+#### 'options' - the optional property for customizing styles of main container (.gri-slider). This is a javascript CSSStyleDeclaration object kind of:
 
 ```javascript
 {
