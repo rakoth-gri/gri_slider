@@ -103,6 +103,7 @@ const MY_SLIDE_LIST = [
 ```
 
 As we can see above, each item of **MY_SLIDE_LIST** potentially has three properties:
+
 - **slideImg** defines the path to the picture of carousel (**required**)
 - **comment** defines the comment to a specific picture (**optional**)
 - **controlImg** defines the type of icon for slider control buttons stylizing (**optional**). **It's enought to define 'controlImg' prop only in the first item of MY_SLIDE_LIST**
@@ -124,17 +125,54 @@ Types of values that can be assigned to each of the props:
 }
 ```
 
-This property adds an inline-styles to main slider container. Attention: **if the transferred CSS property is inherited, it will be inherited by all descendants inside main slider container!!** <br> 
-By default, is an empty object: {}
+This property adds an inline-styles to main slider container. Attention: **if the transferred CSS property is inherited, it will be inherited by all descendants inside main slider container!!** <br>
+By default: {}
 
 #### 'isAutoSlider' - the optional boolean property activating the automatic change of images in the carousel:
 
 ```javascript
-
 new AutoSlider({
-  list: MY_SLIDE_LIST, // required  
-  isAutoSlider: true, // optional  
+  list: MY_SLIDE_LIST, // required
+  isAutoSlider: true, // optional
 });
 ```
 
-By default, is false
+By default: false
+
+#### 'imgInSlideCount' - the optional number property which determines the number of images within a single slide:
+
+```javascript
+new AutoSlider({
+  list: MY_SLIDE_LIST, // required
+  imgInSlideCount: 2, // optional
+});
+```
+
+By default: 1
+
+#### 'panel' - the optional property which connects the slider control panel.
+
+The property is a single-length string Array. there must be only two type of values in the Array: **'renderDots' | 'renderControls'**. Each value will determine the appearance of the control panel.
+
+```javascript
+new AutoSlider({
+  list: MY_SLIDE_LIST, // required
+  panel: ["renderDots"], // optional
+});
+```
+
+Attention, if your choice is **'renderControls'** - you can also specify the icon for the control item: simply indicate the **icon url** for **controlImg** field in the first item of **'list'** Array:
+
+```javascript
+const MY_SLIDE_LIST = [
+  // first item of 'list' Array!
+  {
+    // required prop
+    slideImg: "https://remote-site.com/picture1.jpg",   
+    // optional prop
+    controlImg: "./src/my-icons/icon.svg",
+  },
+];
+```
+
+By default, the panel is not connected
