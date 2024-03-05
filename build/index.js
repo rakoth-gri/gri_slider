@@ -3,7 +3,7 @@ const SLIDE_LIST = [
     {
         slideImg: "https://guitar.com/wp-content/uploads/2020/01/Jackson-charvel-double-neck@1400x1050.jpg",
         comment: "Hello, love you guitars",
-        controlImg: "./src/icons/home.svg",
+        // controlImg: "./src/icons/home.svg",
     },
     {
         slideImg: "http://www.hutchinsonguitars.com/wp-content/uploads/2014/11/IMG_2340.jpg",
@@ -33,6 +33,6 @@ new AutoSlider({
     list: SLIDE_LIST,
     options: { fontFamily: "Montserrat", color: "orangered" },
     isAutoSlider: true,
-    panel: ['renderDots'],
-    imgInSlideCount: 2
+    panel: ["renderDots"],
+    imgInSlideCount: 1,
 });
