@@ -80,7 +80,7 @@ new AutoSlider({ list: MY_SLIDE_LIST });
 
 #### 2. Let's talk about the options we can pass into **_AutoSlider_** class
 
-##### 'list' - the only required property for creating a dynamic carousel. This is an Array of objects kind of:
+#### 'list' - the only required property for creating a dynamic carousel. This is an Array of objects kind of:
 
 ```javascript
 const MY_SLIDE_LIST = [
@@ -113,7 +113,7 @@ Types of values that can be assigned to each of the props:
 - **comment** --> string | null | undefined
 - **controlImg** --> string | null | undefined
 
-##### 'options' - the optional property for customizing styles of main container (<section class="gri-slider"></section>). <br> This is a javascript CSSStyleDeclaration object kind of:
+#### 'options' - the optional property for customizing styles of main container (<section class="gri-slider"></section>). <br> This is a javascript CSSStyleDeclaration object kind of:
 
 ```javascript
 {
@@ -127,7 +127,7 @@ Types of values that can be assigned to each of the props:
 This property adds an inline-styles to main slider container. Attention: **if the transferred CSS property is inherited, it will be inherited by all descendants inside main slider container!!** <br> 
 By default, is an empty object: {}
 
-##### 'isAutoSlider' - the optional boolean property activating the automatic change of images in the carousel:
+#### 'isAutoSlider' - the optional boolean property activating the automatic change of images in the carousel:
 
 ```javascript
 
