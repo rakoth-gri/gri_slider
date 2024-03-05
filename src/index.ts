@@ -1,4 +1,4 @@
-import { AutoSlider } from "./services/Slider.js";
+import AutoSlider from "./services/Slider";
 
 // TYPES
 import { T_SLIDELIST_ITEM } from "./types/types";
@@ -8,7 +8,7 @@ const SLIDE_LIST: T_SLIDELIST_ITEM[] = [
     slideImg:
       "https://guitar.com/wp-content/uploads/2020/01/Jackson-charvel-double-neck@1400x1050.jpg",
     comment: "Hello, love you guitars",
-    // controlImg: "./src/icons/home.svg",
+    controlImg: "./src/icons/home.svg",
   },
   {
     slideImg:
@@ -37,6 +37,7 @@ const SLIDE_LIST: T_SLIDELIST_ITEM[] = [
   {
     slideImg:
       "https://i.pinimg.com/originals/c6/64/42/c664421ecd4b6a8551d7f338232f87c9.jpg",
+    comment: "Fuckin good....",  
   },
 ];
 

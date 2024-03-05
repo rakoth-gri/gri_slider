@@ -1,8 +1,8 @@
 export type T_SELECTORS =
-  | ".slider__prev"
-  | ".slider__next"
-  | ".slider__panel_btn"
-  | ".slider__panel_dot";
+  | ".gri-slider__prev"
+  | ".gri-slider__next"
+  | ".gri-slider__panel_btn"
+  | ".gri-slider__panel_dot";
 
 export type T_SLIDELIST_ITEM = {
   readonly slideImg: string,

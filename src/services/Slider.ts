@@ -1,15 +1,15 @@
-import { toggleClass, iterator, checkCount, nested } from "../utils/utils.js";
+import { toggleClass, iterator, checkCount, nested } from "../utils/utils";
 // TYPES--
-import { T_SELECTORS, T_SLIDELIST_ITEM, T_PANEL } from "../types/types.js";
+import { T_SELECTORS, T_SLIDELIST_ITEM, T_PANEL } from "../types/types";
 
 const EVENT_SELECTORS: T_SELECTORS[] = [
-  ".slider__prev",
-  ".slider__next",
-  ".slider__panel_btn",
-  ".slider__panel_dot",
+  ".gri-slider__prev",
+  ".gri-slider__next",
+  ".gri-slider__panel_btn",
+  ".gri-slider__panel_dot",
 ];
 
-export default class Slider {
+class Slider {
   list: T_SLIDELIST_ITEM[][];
   options: Partial<CSSStyleDeclaration>;
   $sliderBody: HTMLDivElement;
@@ -36,9 +36,9 @@ export default class Slider {
   }) {
     // DOM-ELEMS
     this.$sliderBody = document.querySelector(
-      `.slider__body`
+      `.gri-slider__body`
     ) as HTMLDivElement;
-    this.$slider = document.querySelector(`.slider`) as HTMLDivElement;
+    this.$slider = document.querySelector(`.gri-slider`) as HTMLDivElement;
     this.$track = null;
     this.$imageBlocks = null;
     this.$controls = null;
@@ -91,16 +91,16 @@ export default class Slider {
   }
 
   render(sliderBody: HTMLDivElement, list: T_SLIDELIST_ITEM[][]) {
-    sliderBody.innerHTML = `<div class="slider__track">
+    sliderBody.innerHTML = `<div class="gri-slider__track">
         ${iterator(
           list,
           (slidesArr) => `
             ${slidesArr
               .map(
                 ({ slideImg, comment }) => `
-                <article class="slider__img">
+                <article class="gri-slider__img">
                   <img src="${slideImg}" />
-                  <span class="slider__img_index"> ${comment || ``}</span>
+                  <span class="gri-slider__img_index"> ${comment || ``}</span>
                 </article>`
               )
               .join("")}
@@ -110,8 +110,8 @@ export default class Slider {
     </div>        
     `;
 
-    this.$track = document.querySelector(".slider__track");
-    this.$imageBlocks = document.querySelectorAll(".slider__img");
+    this.$track = document.querySelector(".gri-slider__track");
+    this.$imageBlocks = document.querySelectorAll(".gri-slider__img");
   }
 
   renderControls(slider: HTMLDivElement, list: T_SLIDELIST_ITEM[][]) {
@@ -120,13 +120,13 @@ export default class Slider {
     slider.insertAdjacentHTML(
       "beforeend",
       `
-    <section class='slider__panel'>
+    <section class='gri-slider__panel'>
      ${
        image
          ? iterator(
              list,
              (_, i) =>
-               `<div class='slider__panel_btn ${i === 0 ? "active" : ""}'>
+               `<div class='gri-slider__panel_btn ${i === 0 ? "active" : ""}'>
                   <img src="${image}" id='${i}' loading='lazy'/>                      
                 </div>`,
              "map"
@@ -134,7 +134,7 @@ export default class Slider {
          : iterator(
              list,
              (_, i) => `
-                <div class='slider__panel_btn ${
+                <div class='gri-slider__panel_btn ${
                   i === 0 ? "active" : ""
                 }' id='${i}' style="border: 1px solid">                  
                     ${i + 1}
@@ -146,7 +146,7 @@ export default class Slider {
   `
     );
     this.$controls = Array.from(
-      document.querySelectorAll(".slider__panel_btn")
+      document.querySelectorAll(".gri-slider__panel_btn")
     ) as HTMLDivElement[];
   }
 
@@ -154,11 +154,11 @@ export default class Slider {
     slider.insertAdjacentHTML(
       "beforeend",
       `
-		<section class='slider__panel'>
+		<section class='gri-slider__panel'>
 		${iterator(
       list,
       (_, i) =>
-        `<div class='slider__panel_dot ${
+        `<div class='gri-slider__panel_dot ${
           i === 0 ? "active" : ""
         }' id='${i}'></div>`,
       "map"
@@ -167,7 +167,7 @@ export default class Slider {
 	`
     );
     this.$dots = Array.from(
-      document.querySelectorAll(".slider__panel_dot")
+      document.querySelectorAll(".gri-slider__panel_dot")
     ) as HTMLDivElement[];
   }
 
@@ -262,7 +262,7 @@ export default class Slider {
   }
 }
 
-export class AutoSlider extends Slider {
+export default class AutoSlider extends Slider {
   isAutoSlider: boolean;
   intervalId: undefined | number;
 
