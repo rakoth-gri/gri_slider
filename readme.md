@@ -101,21 +101,29 @@ const MY_SLIDE_LIST = [
     comment: "comment for picture3",
   },
 ];
+
+new AutoSlider({ list: MY_SLIDE_LIST,});
 ```
 
-As we can see above, each item of **MY_SLIDE_LIST** potentially has three properties:
+As we can see above, each item of **MY_SLIDE_LIST** potentially has three props:
+- **slideImg** defines the path to the picture of carousel 
+- **comment** defines the comment to a specific picture 
+- **controlImg** defines the type of icon for slider panel stylizing. **It's enought to define 'controlImg' prop only in zero-index item of list prop array**
 
-- **slideImg** defines the path to the picture of carousel (**required**)
-- **comment** defines the comment to a specific picture (**optional**)
-- **controlImg** defines the type of icon for slider control buttons stylizing (**optional**). **It's enought to define 'controlImg' prop only in the first item of MY_SLIDE_LIST**
+Typing each prop in the **list** item:
 
-Types of values for each prop in the **list** item:
+```typescript
+interface I_LIST_ITEM {
+    // required prop
+    slideImg: string;
+    // optional prop
+    comment: string | null | undefined;
+    // optional prop
+    controlImg: string | null | undefined;
+  }
+```
 
-- **slideImg** --> string
-- **comment** --> string | null | undefined
-- **controlImg** --> string | null | undefined
-
-#### 2.2 'options' - the optional property for customizing styles of main container (.gri-slider). This is a javascript CSSStyleDeclaration object kind of:
+#### 2.2 'options' - the optional property for customizing styles of main container (.gri-slider). This is a javascript CSSStyleDeclaration object:
 
 ```javascript
 {
@@ -126,16 +134,21 @@ Types of values for each prop in the **list** item:
 }
 
 new AutoSlider({
-  list: SLIDE_LIST,
-  options: { fontFamily: "Montserrat", color: "orangered",},
+  list: SLIDE_LIST,  
+  options: { color: "teal", letterSpacing: "0.7px", fontFamily: "Pacifico, cursive" },  
+  panel: ["renderDots"],  
 });
 ```
 
-Types of values for a single prop in options object:
+Picture, that illustrates the options object styles above:
+![options](picts/options.png "options")
 
+
+Types of values for a single prop in options object:
 - **[CSSStyleProp]** --> string | number | undefined
 
-This property uses inline-styling for main slider container. Attention: **if the transferred CSS property is inherited, it will be inherited by all descendants inside main slider container!!** <br>
+Options property uses inline-styles for main slider container (.gri-slider). <br>
+Attention: **if the property is inherited, all the descendants of slider container will inherit the prop's value!** 
 By default: {}
 
 #### 2.3 'isAutoSlider' - the optional property activating the automatic change of images in the carousel:
@@ -147,8 +160,11 @@ new AutoSlider({
 });
 ```
 
-Types of values for the prop:
+You can dynamically **stop / restart** the automatic slides change by **entering / leaving** mouse cursor to the carousel image area:
+![stopAutoSlider](picts/stopAutoSlider.png "stopAutoSlider")
 
+
+Types of values for the prop:
 - **isAutoSlider** --> boolean | undefined
 
 By default: false
@@ -161,6 +177,9 @@ new AutoSlider({
   imgInSlideCount: 2, // optional
 });
 ```
+
+- This picture demonstrates the code above:
+![imgInSlideCount](picts/imgInSlideCount.png "imgInSlideCount")
 
 Types of values for CSS-prop:
 
@@ -180,7 +199,6 @@ new AutoSlider({
 ```
 
 Types of values for CSS-prop:
-
 - **panel** --> ("renderDots" | "renderControls")[]
 
 Attention, if your choice is **'renderControls'** - you can also specify the icon for the control item: simply indicate the **icon url** for **controlImg** field in the first item of **list** prop Array:
@@ -197,10 +215,16 @@ const MY_SLIDE_LIST = [
 ];
 ```
 
-- Example for "renderDots" value:
-![dots panel](picts/renderDots.png "dots panel") 
+- Panel with "renderDots" value:
+![dots panel](picts/renderDots.png "dots panel")
 
-By default, the panel is not connected
+- Panel with "renderControls" value:
+![controls panel](picts/renderControls.png "controls panel")
+
+- Panel with "renderControls" value and with enable 'controlImg' prop of **list** item:
+![controlImg panel](picts/controlImg.png "controlImg panel") 
+
+By default, Panel is not connected!
 
 #### 2.6 'delay' - the optional property in milliseconds, allows you to set the frequency of switching images in the carousel.
 
@@ -212,3 +236,33 @@ new AutoSlider({
 ```
 
 By default: 1500
+
+#### 3. A few words about customizing html markup of gri-slider:
+
+In the markup below you see a recommended structure with pre-prepared html classes and id's. Almost all element's selectors are
+cooperated with source-code files! Please, Do not change it!
+<br>
+But, You can easily change the icon-font tags or add your img tags:
+
+```html
+
+<!-- NOTE! that all selectors that provide working functionality have remained unchanged -->
+
+<section class="gri-slider">  
+  <div class="gri-slider__prev">
+    <!-- add your icon-font-image to display prev arrow -->
+    <i class="my-icon-font-class gri-slider__prev_el" id="prev">
+      my_arrow_left_icon
+    </i>
+  </div>
+  <!-- container for dynamic rendering of functional slider core -->
+  <div class="gri-slider__body">
+    <!-- RENDER -->
+  </div>  
+  <div class="gri-slider__next">
+    <!-- add your svg to display next arrow -->
+    <img src="./myIcons/myIcon.svg" alt="myIcon.svg" class="gri-slider__next_el" id="next">
+  </div>
+</section>
+```
+

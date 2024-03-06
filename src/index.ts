@@ -7,8 +7,8 @@ const SLIDE_LIST: T_SLIDELIST_ITEM[] = [
   {
     slideImg:
       "https://guitar.com/wp-content/uploads/2020/01/Jackson-charvel-double-neck@1400x1050.jpg",
-    comment: "Wow, double hit",
-    // controlImg: "./src/icons/home.svg",
+    comment: "For those who know what to do",
+    controlImg: "./src/icons/home.svg",
   },
   {
     slideImg:
@@ -37,14 +37,14 @@ const SLIDE_LIST: T_SLIDELIST_ITEM[] = [
   {
     slideImg:
       "https://i.pinimg.com/originals/c6/64/42/c664421ecd4b6a8551d7f338232f87c9.jpg",
-    comment: "Fuckin good....",  
+    comment: "Acoustic vibe...",
   },
 ];
 
 new AutoSlider({
   list: SLIDE_LIST,
-  options: { fontFamily: "Montserrat", color: "orangered",},
-  isAutoSlider: true,
+  options: { color: "teal", letterSpacing: "0.7px", fontFamily: "Pacifico, cursive" },
+  isAutoSlider: false,
   panel: ["renderDots"],
   imgInSlideCount: 1,
   delay: 3000,
