@@ -5,7 +5,9 @@
 1. scss / css - to create base styles;
 2. vanilla js - to create logic and render the carousel
 3. TS - for type checking;
-4. All code (js, css) you need to provide a working slider stored in the **"gri-slider"** folder
+4. All source-code (*.js, *.css) stored in the **"gri-slider"** folder
+
+### SEE PREVIEW [RIGHT NOW!!](https://rakoth-gri.github.io/gri_slider/ "GRI_SLIDER IN ACTION")!
 
 #### 1. Three simple steps to connect a carousel to your project
 
