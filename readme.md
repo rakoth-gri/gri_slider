@@ -48,12 +48,12 @@
 
 ```html
 <head>
-  <!-- specify the root to your main js-file in your project: -->
+  <!-- specify the root to your index.js file: -->
   <script src="./index.js" defer type="module"></script>
 </head>
 ```
 
-- inside your main js-file:
+- inside your index.js:
 
 ```javascript
 // specify the root to 'gri-slider' folder in your project:
@@ -149,7 +149,9 @@ Types of values for a single prop in options object:
 
 Options property uses inline-styles for main slider container (.gri-slider). <br>
 Attention: **if the property is inherited, all the descendants of slider container will inherit the prop's value!** 
-By default: {}
+<br>
+
+**By default: {}**
 
 #### 2.3 'isAutoSlider' - the optional property activating the automatic change of images in the carousel:
 
@@ -167,7 +169,7 @@ You can dynamically **stop / restart** the automatic slides change by **entering
 Types of values for the prop:
 - **isAutoSlider** --> boolean | undefined
 
-By default: false
+**By default: false**
 
 #### 2.4 'imgInSlideCount' - the optional property which determines the number of images within a single slide:
 
@@ -185,7 +187,7 @@ Types of values for CSS-prop:
 
 - **imgInSlideCount** --> number | undefined
 
-By default: 1
+**By default: 1**
 
 #### 2.5 'panel' - the optional property which connects the slider control panel.
 
@@ -224,7 +226,7 @@ const MY_SLIDE_LIST = [
 - Panel with "renderControls" value and with enable 'controlImg' prop of **list** item:
 ![controlImg panel](picts/controlImg.png "controlImg panel") 
 
-By default, Panel is not connected!
+**By default: disabled**
 
 #### 2.6 'delay' - the optional property in milliseconds, allows you to set the frequency of switching images in the carousel.
 
@@ -235,7 +237,7 @@ new AutoSlider({
 });
 ```
 
-By default: 1500
+**By default: 1500**
 
 #### 3. A few words about customizing html markup of gri-slider:
 
@@ -246,7 +248,7 @@ But, You can easily change the icon-font tags or add your img tags:
 
 ```html
 
-<!-- NOTE! that all selectors that provide working functionality have remained unchanged -->
+<!-- NOTE! All selectors that provide working functionality have remained unchanged -->
 
 <section class="gri-slider">  
   <div class="gri-slider__prev">
