@@ -1,4 +1,4 @@
-import AutoSlider from "./services/Slider";
+import AutoSlider from "./services/Slider.js";
 
 // TYPES
 import { T_SLIDELIST_ITEM } from "./types/types";
@@ -7,8 +7,8 @@ const SLIDE_LIST: T_SLIDELIST_ITEM[] = [
   {
     slideImg:
       "https://guitar.com/wp-content/uploads/2020/01/Jackson-charvel-double-neck@1400x1050.jpg",
-    comment: "Hello, love you guitars",
-    controlImg: "./src/icons/home.svg",
+    comment: "Wow, double hit",
+    // controlImg: "./src/icons/home.svg",
   },
   {
     slideImg:
@@ -43,8 +43,9 @@ const SLIDE_LIST: T_SLIDELIST_ITEM[] = [
 
 new AutoSlider({
   list: SLIDE_LIST,
-  options: { fontFamily: "Montserrat", color: "orangered" },
+  options: { fontFamily: "Montserrat", color: "orangered",},
   isAutoSlider: true,
   panel: ["renderDots"],
   imgInSlideCount: 1,
+  delay: 3000,
 });

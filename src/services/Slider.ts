@@ -1,6 +1,6 @@
-import { toggleClass, iterator, checkCount, nested } from "../utils/utils";
+import { toggleClass, iterator, checkCount, nested } from "../utils/utils.js";
 // TYPES--
-import { T_SELECTORS, T_SLIDELIST_ITEM, T_PANEL } from "../types/types";
+import { T_SELECTORS, T_SLIDELIST_ITEM, T_PANEL } from "../types/types.js";
 
 const EVENT_SELECTORS: T_SELECTORS[] = [
   ".gri-slider__prev",
@@ -127,7 +127,7 @@ class Slider {
              list,
              (_, i) =>
                `<div class='gri-slider__panel_btn ${i === 0 ? "active" : ""}'>
-                  <img src="${image}" id='${i}' loading='lazy'/>                      
+                  <img src="${image}" id='${i}' loading="lazy"/>                      
                 </div>`,
              "map"
            )
@@ -205,9 +205,9 @@ class Slider {
   }
 
   moveTrack(count: number) {
-    (this.$track as HTMLDivElement).style.transform = `translateX(-${
+    (this.$track as HTMLDivElement).style.transform = `translate3D(-${
       count * (this.width as number)
-    }px)`;
+    }px, 0px, 0px)`;
   }
 
   selectActiveElem(ind: number, elem: keyof Slider) {
@@ -265,6 +265,7 @@ class Slider {
 export default class AutoSlider extends Slider {
   isAutoSlider: boolean;
   intervalId: undefined | number;
+  delay: number;
 
   constructor({
     isAutoSlider = false,
@@ -272,23 +273,26 @@ export default class AutoSlider extends Slider {
     options,
     panel,
     imgInSlideCount,
+    delay = 1500,
   }: {
     isAutoSlider?: boolean;
     list: T_SLIDELIST_ITEM[];
     options?: Partial<CSSStyleDeclaration>;
     panel?: T_PANEL[];
     imgInSlideCount?: number;
+    delay?: number;
   }) {
     super({ options, list, panel, imgInSlideCount });
     // LOGICAL
     this.isAutoSlider = isAutoSlider;
     this.intervalId = undefined;
+    this.delay = delay;
     // METHS
     this.addMouseEventToSlider();
-    this.isAutoSlider && this.autoSlider();
+    this.isAutoSlider && this.autoSlider(this.delay);
   }
 
-  autoSlider() {
+  autoSlider(delay: number) {
     this.intervalId = setInterval(() => {
       this.count++;
       this.count = checkCount(this.count, this.list);
@@ -298,16 +302,16 @@ export default class AutoSlider extends Slider {
           this.$controls ? "$controls" : "$dots"
         );
       this.moveTrack(this.count);
-    }, 1700);
+    }, delay);
   }
 
-  addMouseEventToSliderHandler = (e: Event) => {    
+  addMouseEventToSliderHandler = (e: Event) => {
     if (e.type === "mouseenter") {
       clearInterval(this.intervalId);
       return toggleClass(EVENT_SELECTORS.slice(0, 2));
     }
     toggleClass(EVENT_SELECTORS.slice(0, 2));
-    this.isAutoSlider && this.autoSlider();
+    this.isAutoSlider && this.autoSlider(this.delay);
   };
 
   addMouseEventToSlider() {

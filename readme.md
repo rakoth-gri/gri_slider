@@ -2,9 +2,10 @@
 
 #### 0. The following technologies were used in the development
 
-    1. scss / css - to create base styles;
-    2. vanilla js - to create logic and render the carousel
-    3. TS - for type checking;
+1. scss / css - to create base styles;
+2. vanilla js - to create logic and render the carousel
+3. TS - for type checking;
+4. All code (js, css) you need to provide a working slider stored in the **"gri-slider"** folder
 
 #### 1. Three simple steps to connect a carousel to your project
 
@@ -80,7 +81,7 @@ new AutoSlider({ list: MY_SLIDE_LIST });
 
 #### 2. Let's talk about the options we can pass into **_AutoSlider_** class
 
-#### 'list' - the only required property for creating a dynamic carousel. This is an Array of objects kind of:
+#### 2.1 'list' - the only required property for creating a dynamic carousel. This is an Array of objects kind of:
 
 ```javascript
 const MY_SLIDE_LIST = [
@@ -108,13 +109,13 @@ As we can see above, each item of **MY_SLIDE_LIST** potentially has three proper
 - **comment** defines the comment to a specific picture (**optional**)
 - **controlImg** defines the type of icon for slider control buttons stylizing (**optional**). **It's enought to define 'controlImg' prop only in the first item of MY_SLIDE_LIST**
 
-Types of values that can be assigned to each of the props:
+Types of values for each prop in the **list** item:
 
 - **slideImg** --> string
 - **comment** --> string | null | undefined
 - **controlImg** --> string | null | undefined
 
-#### 'options' - the optional property for customizing styles of main container (.gri-slider). This is a javascript CSSStyleDeclaration object kind of:
+#### 2.2 'options' - the optional property for customizing styles of main container (.gri-slider). This is a javascript CSSStyleDeclaration object kind of:
 
 ```javascript
 {
@@ -123,12 +124,21 @@ Types of values that can be assigned to each of the props:
     width: '700px',
     textAlign: 'center' // inherited-CSS prop
 }
+
+new AutoSlider({
+  list: SLIDE_LIST,
+  options: { fontFamily: "Montserrat", color: "orangered",},
+});
 ```
 
-This property adds an inline-styles to main slider container. Attention: **if the transferred CSS property is inherited, it will be inherited by all descendants inside main slider container!!** <br>
+Types of values for a single prop in options object:
+
+- **[CSSStyleProp]** --> string | number | undefined
+
+This property uses inline-styling for main slider container. Attention: **if the transferred CSS property is inherited, it will be inherited by all descendants inside main slider container!!** <br>
 By default: {}
 
-#### 'isAutoSlider' - the optional boolean property activating the automatic change of images in the carousel:
+#### 2.3 'isAutoSlider' - the optional property activating the automatic change of images in the carousel:
 
 ```javascript
 new AutoSlider({
@@ -137,9 +147,13 @@ new AutoSlider({
 });
 ```
 
+Types of values for the prop:
+
+- **isAutoSlider** --> boolean | undefined
+
 By default: false
 
-#### 'imgInSlideCount' - the optional number property which determines the number of images within a single slide:
+#### 2.4 'imgInSlideCount' - the optional property which determines the number of images within a single slide:
 
 ```javascript
 new AutoSlider({
@@ -148,11 +162,15 @@ new AutoSlider({
 });
 ```
 
+Types of values for CSS-prop:
+
+- **imgInSlideCount** --> number | undefined
+
 By default: 1
 
-#### 'panel' - the optional property which connects the slider control panel.
+#### 2.5 'panel' - the optional property which connects the slider control panel.
 
-The property is a single-length string Array. there must be only two type of values in the Array: **'renderDots' | 'renderControls'**. Each value will determine the appearance of the control panel.
+The property is a single-length string Array, determines the appearance of the control panel.
 
 ```javascript
 new AutoSlider({
@@ -161,18 +179,36 @@ new AutoSlider({
 });
 ```
 
-Attention, if your choice is **'renderControls'** - you can also specify the icon for the control item: simply indicate the **icon url** for **controlImg** field in the first item of **'list'** Array:
+Types of values for CSS-prop:
+
+- **panel** --> ("renderDots" | "renderControls")[]
+
+Attention, if your choice is **'renderControls'** - you can also specify the icon for the control item: simply indicate the **icon url** for **controlImg** field in the first item of **list** prop Array:
 
 ```javascript
 const MY_SLIDE_LIST = [
   // first item of 'list' Array!
   {
     // required prop
-    slideImg: "https://remote-site.com/picture1.jpg",   
-    // optional prop
+    slideImg: "https://remote-site.com/picture1.jpg",
+    // optional prop - defines the image icon for all control buttons
     controlImg: "./src/my-icons/icon.svg",
   },
 ];
 ```
 
+- Example for "renderDots" value:
+![dots panel](picts/renderDots.png "dots panel") 
+
 By default, the panel is not connected
+
+#### 2.6 'delay' - the optional property in milliseconds, allows you to set the frequency of switching images in the carousel.
+
+```javascript
+new AutoSlider({
+  list: MY_SLIDE_LIST, // required
+  delay: 3000, // optional in milliseconds
+});
+```
+
+By default: 1500

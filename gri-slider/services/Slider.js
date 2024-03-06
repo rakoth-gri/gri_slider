@@ -63,7 +63,7 @@ class Slider {
     <section class='gri-slider__panel'>
      ${image
             ? iterator(list, (_, i) => `<div class='gri-slider__panel_btn ${i === 0 ? "active" : ""}'>
-                  <img src="${image}" id='${i}' loading='lazy'/>                      
+                  <img src="${image}" id='${i}' loading="lazy"/>                      
                 </div>`, "map")
             : iterator(list, (_, i) => `
                 <div class='gri-slider__panel_btn ${i === 0 ? "active" : ""}' id='${i}' style="border: 1px solid">                  
@@ -96,7 +96,7 @@ class Slider {
         iterator(Object.keys(options), (key) => (this.$slider.style[key] = options[key]), "forEach");
     }
     moveTrack(count) {
-        this.$track.style.transform = `translateX(-${count * this.width}px)`;
+        this.$track.style.transform = `translate3D(-${count * this.width}px, 0px, 0px)`;
     }
     selectActiveElem(ind, elem) {
         iterator(this[elem], (elem, i) => {
@@ -135,21 +135,23 @@ class Slider {
 export default class AutoSlider extends Slider {
     isAutoSlider;
     intervalId;
-    constructor({ isAutoSlider = false, list, options, panel, imgInSlideCount, }) {
+    delay;
+    constructor({ isAutoSlider = false, list, options, panel, imgInSlideCount, delay = 1500, }) {
         super({ options, list, panel, imgInSlideCount });
         this.isAutoSlider = isAutoSlider;
         this.intervalId = undefined;
+        this.delay = delay;
         this.addMouseEventToSlider();
-        this.isAutoSlider && this.autoSlider();
+        this.isAutoSlider && this.autoSlider(this.delay);
     }
-    autoSlider() {
+    autoSlider(delay) {
         this.intervalId = setInterval(() => {
             this.count++;
             this.count = checkCount(this.count, this.list);
             this.panel &&
                 this.selectActiveElem(this.count, this.$controls ? "$controls" : "$dots");
             this.moveTrack(this.count);
-        }, 1700);
+        }, delay);
     }
     addMouseEventToSliderHandler = (e) => {
         if (e.type === "mouseenter") {
@@ -157,7 +159,7 @@ export default class AutoSlider extends Slider {
             return toggleClass(EVENT_SELECTORS.slice(0, 2));
         }
         toggleClass(EVENT_SELECTORS.slice(0, 2));
-        this.isAutoSlider && this.autoSlider();
+        this.isAutoSlider && this.autoSlider(this.delay);
     };
     addMouseEventToSlider() {
         this.$slider.addEventListener("mouseenter", this.addMouseEventToSliderHandler);
