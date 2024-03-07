@@ -273,7 +273,7 @@ export default class AutoSlider extends Slider {
     options,
     panel,
     imgInSlideCount,
-    delay = 1500,
+    delay = 1500
   }: {
     isAutoSlider?: boolean;
     list: T_SLIDELIST_ITEM[];

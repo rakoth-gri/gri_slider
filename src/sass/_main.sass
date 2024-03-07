@@ -3,15 +3,19 @@
     padding: 0px
     margin: 0px
 
+body
+    background-color: #83898c    
+
 .gri-slider
     font-family: 'Montserrat'
     font-size: 20px
     font-weight: 700
-    width: 40%
+    width: 45%
     margin: 2rem auto
     @include flex-mixin
     justify-content: space-evenly
     flex-wrap: wrap
+    user-select: none
 
     &__next, &__prev
         width: 30px
@@ -21,7 +25,8 @@
         cursor: pointer
         z-index: 5
         opacity: 0
-        transition: 0.25s all ease  
+        transition: 0.25s all ease 
+        user-select: none 
 
         &.active
             opacity: 1
@@ -36,7 +41,7 @@
     &__body
         width: 80%
         height: 100%
-        overflow: hidden        
+        overflow: hidden       
 
     &__track
         will-change: transform, opacity        
@@ -46,13 +51,14 @@
     &__img
         position: relative
         width: calc(100% / 3)
+        max-height: 450px
         margin: 0 0.25rem            
         
         img
             border: none
             @include size-mixin
             object-fit: cover
-            border-radius: 1em            
+            // border-radius: 1em            
 
         &_index            
             text-transform: uppercase           

@@ -5,7 +5,7 @@
 1. scss / css - to create base styles;
 2. vanilla js - to create logic and render the carousel
 3. TS - for type checking;
-4. All source-code (*.js, *.css) stored in the **"gri-slider"** folder
+4. All source-code (_.js, _.css) stored in the **"gri-slider"** folder
 
 ### SEE PREVIEW [RIGHT NOW!!](https://rakoth-gri.github.io/gri_slider/ "GRI_SLIDER IN ACTION")!
 
@@ -104,25 +104,26 @@ const MY_SLIDE_LIST = [
   },
 ];
 
-new AutoSlider({ list: MY_SLIDE_LIST,});
+new AutoSlider({ list: MY_SLIDE_LIST });
 ```
 
 As we can see above, each item of **MY_SLIDE_LIST** potentially has three props:
-- **slideImg** defines the path to the picture of carousel 
-- **comment** defines the comment to a specific picture 
+
+- **slideImg** defines the path to the picture of carousel
+- **comment** defines the comment to a specific picture
 - **controlImg** defines the type of icon for slider panel stylizing. **It's enought to define 'controlImg' prop only in zero-index item of list prop array**
 
 Typing each prop in the **list** item:
 
 ```typescript
 interface I_LIST_ITEM {
-    // required prop
-    slideImg: string;
-    // optional prop
-    comment: string | null | undefined;
-    // optional prop
-    controlImg: string | null | undefined;
-  }
+  // required prop
+  slideImg: string;
+  // optional prop
+  comment: string | null | undefined;
+  // optional prop
+  controlImg: string | null | undefined;
+}
 ```
 
 #### 2.2 'options' - the optional property for customizing styles of main container (.gri-slider). This is a javascript CSSStyleDeclaration object:
@@ -136,21 +137,23 @@ interface I_LIST_ITEM {
 }
 
 new AutoSlider({
-  list: SLIDE_LIST,  
-  options: { color: "teal", letterSpacing: "0.7px", fontFamily: "Pacifico, cursive" },  
-  panel: ["renderDots"],  
+  list: SLIDE_LIST,
+  options: { color: "teal", letterSpacing: "1.2px", fontFamily: "Pacifico, cursive" },
+  panel: ["renderDots"],
 });
 ```
 
 Picture, that illustrates the options object styles above:
 ![options](picts/options.png "options")
 
+**By default: the 'fontFamily' prop attached for the main .gri-slider container is 'Montserrat'**
 
 Types of values for a single prop in options object:
+
 - **[CSSStyleProp]** --> string | number | undefined
 
 Options property uses inline-styles for main slider container (.gri-slider). <br>
-Attention: **if the property is inherited, all the descendants of slider container will inherit the prop's value!** 
+Attention: **if the property is inherited, all the descendants of slider container will inherit the prop's value!**
 <br>
 
 **By default: {}**
@@ -167,8 +170,8 @@ new AutoSlider({
 You can dynamically **stop / restart** the automatic slides change by **entering / leaving** mouse cursor to the carousel image area:
 ![stopAutoSlider](picts/stopAutoSlider.png "stopAutoSlider")
 
-
 Types of values for the prop:
+
 - **isAutoSlider** --> boolean | undefined
 
 **By default: false**
@@ -183,7 +186,7 @@ new AutoSlider({
 ```
 
 - This picture demonstrates the code above:
-![imgInSlideCount](picts/imgInSlideCount.png "imgInSlideCount")
+  ![imgInSlideCount](picts/imgInSlideCount.png "imgInSlideCount")
 
 Types of values for CSS-prop:
 
@@ -203,6 +206,7 @@ new AutoSlider({
 ```
 
 Types of values for CSS-prop:
+
 - **panel** --> ("renderDots" | "renderControls")[]
 
 Attention, if your choice is **'renderControls'** - you can also specify the icon for the control item: simply indicate the **icon url** for **controlImg** field in the first item of **list** prop Array:
@@ -220,13 +224,13 @@ const MY_SLIDE_LIST = [
 ```
 
 - Panel with "renderDots" value:
-![dots panel](picts/renderDots.png "dots panel")
+  ![dots panel](picts/renderDots.png "dots panel")
 
 - Panel with "renderControls" value:
-![controls panel](picts/renderControls.png "controls panel")
+  ![controls panel](picts/renderControls.png "controls panel")
 
 - Panel with "renderControls" value and with enable 'controlImg' prop of **list** item:
-![controlImg panel](picts/controlImg.png "controlImg panel") 
+  ![controlImg panel](picts/controlImg.png "controlImg panel")
 
 **By default: disabled**
 
@@ -249,10 +253,9 @@ cooperated with source-code files! Please, Do not change it!
 But, You can easily change the icon-font tags or add your img tags:
 
 ```html
-
 <!-- NOTE! All selectors that provide working functionality have remained unchanged -->
 
-<section class="gri-slider">  
+<section class="gri-slider">
   <div class="gri-slider__prev">
     <!-- add your icon-font-image to display prev arrow -->
     <i class="my-icon-font-class gri-slider__prev_el" id="prev">
@@ -262,11 +265,45 @@ But, You can easily change the icon-font tags or add your img tags:
   <!-- container for dynamic rendering of functional slider core -->
   <div class="gri-slider__body">
     <!-- RENDER -->
-  </div>  
+  </div>
   <div class="gri-slider__next">
     <!-- add your svg to display next arrow -->
-    <img src="./myIcons/myIcon.svg" alt="myIcon.svg" class="gri-slider__next_el" id="next">
+    <img
+      src="./myIcons/myIcon.svg"
+      alt="myIcon.svg"
+      class="gri-slider__next_el"
+      id="next"
+    />
   </div>
 </section>
 ```
 
+#### 3. A few words about customizing styles of gri-slider:
+You can always customize styles by modifying the styles attached in **index.min.css** file
+
+The media-querries grid,suggested in pre-prepared **index.min.css** file, below: 
+
+```css
+
+@media screen and (max-width: 1399.98px) {
+  /* props */
+}        
+
+@media screen and (max-width: 1199.98px) {
+  /* props */
+}           
+       
+@media screen and (max-width: 991.98px) {
+  /* props */
+}
+       
+@media screen and (max-width: 767.98px) {
+  /* props */
+} 
+                    
+@media screen and (max-width: 575.98px) {
+  /* props */
+}
+```
+
+#### 4. The main Slider class includes method, that allows automatically adjusting of the carousel to different screen resolutions

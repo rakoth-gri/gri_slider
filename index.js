@@ -4,7 +4,7 @@ const SLIDE_LIST = [
   {
     slideImg: "./picts/guitars/at_ibanez.jpg",
     comment: "Andy Timmons <b>`CRYING`</b> Ibanez",
-    controlImg: "./src/icons/guitar.svg",
+    // controlImg: "./src/icons/guitar.svg",
   },
   {
     slideImg: "./picts/guitars/ej_strat.jpg",
@@ -12,7 +12,7 @@ const SLIDE_LIST = [
   },
   {
     slideImg: "./picts/guitars/pg_FRM_150TR.jpg",
-    comment: "Paul Guilbert's <b>`SUPER HERO`</b> FRM_150TR Ibanez",
+    comment: "Paul Guilbert's FRM_150TR Ibanez",
   },
   {
     slideImg: "./picts/guitars/sv_JEM777.jpg",
