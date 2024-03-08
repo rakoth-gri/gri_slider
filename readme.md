@@ -26,7 +26,7 @@
       arrow_left_alt
     </span>
   </div>
-  <!-- container for dynamic rendering of functional slider core -->
+  <!-- container with carousel inside -->
   <div class="gri-slider__body">
     <!-- RENDER -->
   </div>
@@ -44,14 +44,14 @@
 ```html
 <head>
   <!-- other meta content -->
-  <!-- specify the root to gri-slider folder in your project -->
+  <!-- specify root to gri-slider folder in your project -->
   <link rel="stylesheet" href="./gri-slider/index.min.css" />
 </head>
 ```
 
-3. Import a AutoSlider class into your main.js file, as shown below:
+3. Import AutoSlider class as shown below:
 
-- connection js-file to html:
+- enabling javascript to html with **recommended attributes**:
 
 ```html
 <head>
@@ -60,14 +60,13 @@
 </head>
 ```
 
-- inside your index.js:
+- inside index.js:
 
 ```javascript
 // specify the root to 'gri-slider' folder in your project:
 import AutoSlider from "./gri-slider/index.js";
 
 // invoke the AutoSlider class with options:
-
 new AutoSlider({
   list: MY_SLIDE_LIST, // required
   options: { fontFamily: "Montserrat", color: "orangered" }, // optional
@@ -82,13 +81,12 @@ new AutoSlider({
 ```javascript
 // specify the root to 'gri-slider' folder in your project:
 import AutoSlider from "./gri-slider/index.js";
-
 new AutoSlider({ list: MY_SLIDE_LIST });
 ```
 
-#### 2. Let's talk about the options we can pass into **_AutoSlider_** class
+#### 2. PROPERTIES ---
 
-#### 2.1 'list' - the only required property for creating a dynamic carousel. This is an Array of objects kind of:
+#### 2.1 'list' - the only required prop for creating a dynamic carousel. This is an Array of objects kind of:
 
 ```javascript
 const MY_SLIDE_LIST = [
@@ -116,9 +114,9 @@ As we can see above, each item of **MY_SLIDE_LIST** potentially has three props:
 
 - **slideImg** defines the path to the picture of carousel
 - **comment** defines the comment to a specific picture
-- **controlImg** defines the type of icon for slider panel stylizing. **It's enought to define 'controlImg' prop only in zero-index item of list prop array**
+- **controlImg** defines the root of the icon for slider panel customizing. **You should always pass 'controlImg' prop only in zero-index item of 'list' array**
 
-Typing each prop in the **list** item:
+Typing for each prop in the **'list'** item:
 
 ```typescript
 interface I_LIST_ITEM {
@@ -131,7 +129,7 @@ interface I_LIST_ITEM {
 }
 ```
 
-#### 2.2 'options' - the optional property for customizing styles of main container (.gri-slider). This is a javascript CSSStyleDeclaration object:
+#### 2.2 'options' - the optional prop for customizing styles of main container (.gri-slider). This is a javascript CSSStyleDeclaration object:
 
 ```javascript
 {
@@ -151,19 +149,20 @@ new AutoSlider({
 Picture, that illustrates the options object styles above:
 ![options](picts/options.png "options")
 
-**By default: the 'fontFamily' prop attached for the main .gri-slider container is 'Montserrat'**
+**By default: font of slider container (.gri-slider) is 'Montserrat'**
 
 Types of values for a single prop in options object:
 
 - **[CSSStyleProp]** --> string | number | undefined
 
-Options property uses inline-styles for main slider container (.gri-slider). <br>
-Attention: **if the property is inherited, all the descendants of slider container will inherit the prop's value!**
+Attention:
+- **'options'** prop adds inline-styles for slider container (.gri-slider)
+- **if the CSS-prop refers to inherited, slider container's children inherit the prop's value!**
 <br>
 
 **By default: {}**
 
-#### 2.3 'isAutoSlider' - the optional property activating the automatic change of images in the carousel:
+#### 2.3 'isAutoSlider' - the optional property, activates the automatic slides switching in carousel:
 
 ```javascript
 new AutoSlider({
@@ -172,7 +171,7 @@ new AutoSlider({
 });
 ```
 
-You can dynamically **stop / restart** the automatic slides change by **entering / leaving** mouse cursor to the carousel image area:
+You can dynamically **stop / restart** the automatic slides change by **entering / leaving** mouse cursor to slider container area:
 ![stopAutoSlider](picts/stopAutoSlider.png "stopAutoSlider")
 
 Types of values for the prop:
@@ -214,37 +213,36 @@ Types of values for CSS-prop:
 
 - **panel** --> ("renderDots" | "renderControls")[]
 
-Attention, if your choice is **'renderControls'** - you can also specify the icon for the control item: simply indicate the **icon url** for **controlImg** field in the first item of **list** prop Array:
+By the way, if the value is ['renderControls'] - you can also specify the icon for the control button: simply indicate the path for **controlImg** prop in zero-index item of **list** prop:
 
 ```javascript
 const MY_SLIDE_LIST = [
-  // first item of 'list' Array!
-  {
-    // required prop
+  // zero-index item of 'list' Array!
+  {    
     slideImg: "https://remote-site.com/picture1.jpg",
-    // optional prop - defines the image icon for all control buttons
-    controlImg: "./src/my-icons/icon.svg",
+    // specifing path to the icon:
+    controlImg: "./src/icons/guitar.svg",
   },
 ];
 ```
 
-- Panel with "renderDots" value:
+- Panel with ["renderDots"[ value:
   ![dots panel](picts/renderDots.png "dots panel")
 
-- Panel with "renderControls" value:
+- Panel with ["renderControls"] value:
   ![controls panel](picts/renderControls.png "controls panel")
 
-- Panel with "renderControls" value and with enable 'controlImg' prop of **list** item:
+- Panel with ["renderControls"] value and with enable 'controlImg' prop:
   ![controlImg panel](picts/controlImg.png "controlImg panel")
 
 **By default: disabled**
 
-#### 2.6 'delay' - the optional property in milliseconds, allows you to set the frequency of switching images in the carousel.
+#### 2.6 'delay' - the optional property, allows you to set the frequency of slides switching in the carousel.
 
 ```javascript
 new AutoSlider({
   list: MY_SLIDE_LIST, // required
-  delay: 3000, // optional in milliseconds
+  delay: 3e3, // optional,  milliseconds
 });
 ```
 
@@ -252,10 +250,10 @@ new AutoSlider({
 
 #### 3. A few words about customizing html markup of gri-slider:
 
-In the markup below you see a recommended structure with pre-prepared html classes and id's. Almost all element's selectors are
+Below, you see a recommended structure with pre-prepared html classes and ides. Almost all element's selectors are
 cooperated with source-code files! Please, Do not change it!
 <br>
-But, You can easily change the icon-font tags or add your img tags:
+You can customize gri-slider__prev_el, gri-slider__next-el elements - by adding your own icons or svg:**
 
 ```html
 <!-- NOTE! All selectors that provide working functionality have remained unchanged -->
@@ -264,7 +262,7 @@ But, You can easily change the icon-font tags or add your img tags:
   <div class="gri-slider__prev">
     <!-- add your icon-font-image to display prev arrow -->
     <i class="my-icon-font-class gri-slider__prev_el" id="prev">
-      my_arrow_left_icon
+      my_arrow_prev_icon
     </i>
   </div>
   <!-- container for dynamic rendering of functional slider core -->
@@ -286,7 +284,7 @@ But, You can easily change the icon-font tags or add your img tags:
 #### 3. A few words about customizing styles of gri-slider:
 You can always customize styles by modifying the styles attached in **index.min.css** file
 
-The media-querries grid,suggested in pre-prepared **index.min.css** file, below: 
+The media-querries grid,suggested in pre-prepared **index.min.css** file: 
 
 ```css
 
@@ -311,4 +309,4 @@ The media-querries grid,suggested in pre-prepared **index.min.css** file, below:
 }
 ```
 
-#### 4. The main Slider class includes method, that allows automatically adjusting of the carousel to different screen resolutions
+#### 4. The main Slider class includes 'resize' method, which automatically adjusts the carousel to current screen resolution!
