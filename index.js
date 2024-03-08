@@ -4,7 +4,7 @@ const SLIDE_LIST = [
   {
     slideImg: "./picts/guitars/at_ibanez.jpg",
     comment: "Andy Timmons <b>`CRYING`</b> Ibanez",
-    // controlImg: "./src/icons/guitar.svg",
+    controlImg: "./src/icons/guitar.svg",
   },
   {
     slideImg: "./picts/guitars/ej_strat.jpg",
@@ -16,7 +16,7 @@ const SLIDE_LIST = [
   },
   {
     slideImg: "./picts/guitars/sv_JEM777.jpg",
-    comment: "Steve Vai's <strong>` PRAYING `</strong> Ibanez JEM777",
+    comment: "Steve Vai's <strong>`PRAYING`</strong> Ibanez JEM777",
   },
   {
     slideImg: "./picts/guitars/ym_fender_strat.jpg",
@@ -27,9 +27,9 @@ const SLIDE_LIST = [
 // ACCELERATE: ---
 new AutoSlider({
   list: SLIDE_LIST,
-  options: { fontFamily: "montserrat", color: "#a81843", letterSpacing: '0.7px' },
+  options: { fontFamily: "Merienda", color: "#ab1526", letterSpacing: "0.7px", fontWeight: 700 },
   isAutoSlider: true,
   panel: ["renderControls"],
   imgInSlideCount: 1,
-  delay: 2e3
+  delay: 2e3,
 });

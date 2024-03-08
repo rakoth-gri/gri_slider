@@ -1,0 +1,9 @@
+$fonts: "Montserrat" "Montserrat-Light" 300, "Montserrat" "Montserrat-Regular" 400, "Montserrat" "Montserrat-Medium" 500, "Montserrat" "Montserrat-Bold" 700, "RedHatDisplay" "RedHatDisplay-Light" 300, "RedHatDisplay" "RedHatDisplay-Regular" 400, "RedHatDisplay" "RedHatDisplay-Medium" 500, "RedHatDisplay" "RedHatDisplay-Bold" 700, "Ubuntu" "Ubuntu-Light" 300, "Ubuntu" "Ubuntu-Regular" 400, "Ubuntu" "Ubuntu-Medium" 500, "Ubuntu" "Ubuntu-Bold" 700, "Merienda" "Merienda-Light" 300, "Merienda" "Merienda-Regular" 400, "Merienda" "Merienda-Medium" 500, "Merienda" "Merienda-Bold" 700, "Caveat" "Caveat-Light" 300, "Caveat" "Caveat-Regular" 400, "Caveat" "Caveat-Medium" 500, "Caveat" "Caveat-Bold" 700, "ShadowsIntoLight" "ShadowsIntoLight-Regular" 400, "PermanentMarker" "PermanentMarker-Regular" 400, "Pacifico" "Pacifico-Regular" 400, "Lobster" "Lobster-Regular" 400, "Creepster" "Creepster-Regular" 400, "BebasNeue" "BebasNeue-Regular" 400
+   
+@each $font, $origin, $weigth in $fonts 
+    @font-face 
+        font-family: $font
+        src: url("./fonts/#{$origin}.ttf")
+        font-display: swap
+        font-weight: $weigth
+

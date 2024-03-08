@@ -1,11 +1,16 @@
 ### GRI-slider is an image carousel, easy to integrate into your Javascript project
 
-#### 0. The following technologies were used in the development
+#### The following technologies were used in the development
 
 1. scss / css - to create base styles;
 2. vanilla js - to create logic and render the carousel
 3. TS - for type checking;
-4. All source-code (_.js, _.css) stored in the **"gri-slider"** folder
+
+#### 0. All source-code stored in the **"gri-slider"** folder
+- index.min.css  --> pre-prepared css styles (default);
+- index.js --> js-file which re-exports main Slider class and other required utils;
+- fonts --> some local fonts, already integrated in default css-file
+- types --> empty folder, generated after ts compilation
 
 ### SEE PREVIEW [RIGHT NOW!!](https://rakoth-gri.github.io/gri_slider/ "GRI_SLIDER IN ACTION")!
 
