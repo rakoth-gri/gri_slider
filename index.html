@@ -12,25 +12,70 @@
     <title>SLIDER</title>
     <link rel="stylesheet" href="./gri-slider/index.min.css" />
     <script src="index.js" defer type="module"></script>
+    <style>
+      body {
+        background-color: #94b3b3;
+      }
+
+      main {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        position: relative;
+      }
+
+      h1 {
+        font-family: "Merienda";
+        font-weight: 700;
+        top: 3%;
+        position: absolute;
+        left: 3%;
+        color: purple;
+      }
+
+      figure {
+        font-family: "Merienda";
+        bottom: 3%;
+        position: absolute;
+        right: 3%;
+        color: purple;
+      }
+
+      figcaption {
+        width: 80%;
+        margin: 0.35rem auto;
+      }
+    </style>
   </head>
   <body>
-    <main style="display: flex; align-items: center; justify-content: center; height: 100vh; position: relative;">
-      <h1 style="font-family: 'Merienda'; font-weight: 700; top: 3%; position: absolute; left: 3%; color: #ab1526"> GRI_SLIDER </h1>
+    <main>
+      <h1>GRI_SLIDER</h1>
       <section class="gri-slider">
         <div class="gri-slider__prev">
-          <span class="material-symbols-outlined gri-slider__prev_el" id="prev">
-            arrow_left_alt
-          </span>
+          <span class="icon-undo gri-slider__prev_el" id="prev"></span>
         </div>
         <div class="gri-slider__body">
           <!-- RENDER -->
         </div>
         <div class="gri-slider__next">
-          <span class="material-symbols-outlined gri-slider__next_el" id="next">
-            arrow_right_alt
-          </span>
+          <span class="icon-redo gri-slider__next_el" id="next"></span>
         </div>
       </section>
+      <figure>
+        <figcaption>Listen to Eric Johnson's SRV:</figcaption>
+        <audio
+          controls
+          src="./src/audio/ej_srv.mp3"
+          loop
+          id="audio"
+          autoplay
+        ></audio>
+      </figure>
     </main>
+
+    <script>
+      document.getElementById("audio").volume = 0.05;
+    </script>
   </body>
 </html>

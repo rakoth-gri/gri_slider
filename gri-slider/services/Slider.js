@@ -23,7 +23,7 @@ var EVENT_SELECTORS = [
 var Slider = (function () {
     function Slider(_a) {
         var _this = this;
-        var list = _a.list, _b = _a.options, options = _b === void 0 ? {} : _b, _c = _a.panel, panel = _c === void 0 ? undefined : _c, _d = _a.imgInSlideCount, imgInSlideCount = _d === void 0 ? 1 : _d;
+        var list = _a.list, _b = _a.csssd, csssd = _b === void 0 ? {} : _b, _c = _a.panel, panel = _c === void 0 ? undefined : _c, _d = _a.imgInSlideCount, imgInSlideCount = _d === void 0 ? 1 : _d;
         this.trackStyles = function (track, images, list, imgInSlideCount) {
             _this.width = _this.$sliderBody.offsetWidth;
             images.forEach(function (img) {
@@ -58,19 +58,21 @@ var Slider = (function () {
         this.$imageBlocks = null;
         this.$controls = null;
         this.$dots = null;
-        this.options = options;
+        this.csssd = csssd;
         this.panel = panel;
         this.imgInSlideCount = imgInSlideCount;
         this.list = nested(list, this.imgInSlideCount);
         this.count = 0;
         this.width = null;
-        this.builder(this.$sliderBody, this.list, this.$slider, this.options, this.panel, this.imgInSlideCount);
+        if (!list.length)
+            throw new Error('You should pass non-empty Array as a value of the `list` param!');
+        this.builder(this.$sliderBody, this.list, this.$slider, this.csssd, this.panel, this.imgInSlideCount);
     }
-    Slider.prototype.builder = function (sliderBody, list, slider, options, panel, imgInSlideCount) {
+    Slider.prototype.builder = function (sliderBody, list, slider, csssd, panel, imgInSlideCount) {
         this.render(sliderBody, list);
         panel && this[panel[0]](slider, list);
         this.trackStyles(this.$track, this.$imageBlocks, list, imgInSlideCount);
-        this.checkOptionsStyles(options);
+        this.checkOptionsStyles(csssd);
         this.addClickEventToSlider();
         this.resize();
     };
@@ -99,15 +101,15 @@ var Slider = (function () {
         }, "map"), "\n\t\t</section>\n\t"));
         this.$dots = Array.from(document.querySelectorAll(".gri-slider__panel_dot"));
     };
-    Slider.prototype.checkOptionsStyles = function (options) {
+    Slider.prototype.checkOptionsStyles = function (csssd) {
         var _this = this;
-        if (!Object.values(options).length) {
+        if (!Object.values(csssd).length) {
             return console.warn("Cant find any prop in style-options of ".concat(this.constructor.name, " constructor"));
         }
-        if (!Object.values(options).find(function (val) { return val; })) {
+        if (!Object.values(csssd).find(function (val) { return val; })) {
             return console.warn("The values of 'Options object' are empty or falsy...");
         }
-        iterator(Object.keys(options), function (key) { return (_this.$slider.style[key] = options[key]); }, "forEach");
+        iterator(Object.keys(csssd), function (key) { return (_this.$slider.style[key] = csssd[key]); }, "forEach");
     };
     Slider.prototype.moveTrack = function (count) {
         this.$track.style.transform = "translate3D(-".concat(count * this.width, "px, 0px, 0px)");
@@ -132,8 +134,8 @@ var Slider = (function () {
 var AutoSlider = (function (_super) {
     __extends(AutoSlider, _super);
     function AutoSlider(_a) {
-        var _b = _a.isAutoSlider, isAutoSlider = _b === void 0 ? false : _b, list = _a.list, options = _a.options, panel = _a.panel, imgInSlideCount = _a.imgInSlideCount, _c = _a.delay, delay = _c === void 0 ? 1500 : _c;
-        var _this = _super.call(this, { options: options, list: list, panel: panel, imgInSlideCount: imgInSlideCount }) || this;
+        var _b = _a.isAutoSlider, isAutoSlider = _b === void 0 ? false : _b, list = _a.list, csssd = _a.csssd, panel = _a.panel, imgInSlideCount = _a.imgInSlideCount, _c = _a.delay, delay = _c === void 0 ? 1800 : _c;
+        var _this = _super.call(this, { csssd: csssd, list: list, panel: panel, imgInSlideCount: imgInSlideCount }) || this;
         _this.addMouseEventToSliderHandler = function (e) {
             if (e.type === "mouseenter") {
                 clearInterval(_this.intervalId);

@@ -29,7 +29,12 @@ const EMPTY = [];
 // ACCELERATE: ---
 new AutoSlider({
   list: SLIDE_LIST,
-  options: { fontFamily: "Merienda", color: "#ab1526", letterSpacing: "0.7px", fontWeight: 700 },
+  csssd: {
+    fontFamily: "Merienda",
+    color: "purple",
+    letterSpacing: "0.7px",
+    fontWeight: 700,
+  },
   isAutoSlider: true,
   panel: ["renderControls"],
   imgInSlideCount: 1,

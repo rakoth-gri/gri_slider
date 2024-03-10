@@ -1,6 +1,6 @@
 import { toggleClass, iterator, checkCount, nested } from "../utils/utils.js";
 // TYPES--
-import { T_SELECTORS, T_SLIDELIST_ITEM, T_PANEL } from "../types/types.js";
+import { T_SELECTORS, T_SLIDELIST_ITEM, T_PANEL, T_SLIDER_PARAMS } from "../types/types.js";
 
 const EVENT_SELECTORS: T_SELECTORS[] = [
   ".gri-slider__prev",
@@ -11,7 +11,7 @@ const EVENT_SELECTORS: T_SELECTORS[] = [
 
 class Slider {
   list: T_SLIDELIST_ITEM[][];
-  options: Partial<CSSStyleDeclaration>;
+  csssd: Partial<CSSStyleDeclaration>;
   $sliderBody: HTMLDivElement;
   $slider: HTMLDivElement;
   $track: HTMLDivElement | null;
@@ -25,15 +25,10 @@ class Slider {
 
   constructor({
     list,
-    options = {},
+    csssd = {},
     panel = undefined,
     imgInSlideCount = 1,
-  }: {
-    list: T_SLIDELIST_ITEM[];
-    options?: Partial<CSSStyleDeclaration>;
-    panel?: T_PANEL[];
-    imgInSlideCount?: number;
-  }) {
+  }: T_SLIDER_PARAMS) {
     // DOM-ELEMS
     this.$sliderBody = document.querySelector(
       `.gri-slider__body`
@@ -44,19 +39,20 @@ class Slider {
     this.$controls = null;
     this.$dots = null;
     // optional css.declaration object
-    this.options = options;
+    this.csssd = csssd;
     // LOGIC VARS
     this.panel = panel;
     this.imgInSlideCount = imgInSlideCount;
-    this.list = nested(list, this.imgInSlideCount);
+    this.list = nested(list, this.imgInSlideCount);    
     this.count = 0;
     this.width = null;
+    if (!list.length) throw new Error('You should pass non-empty Array as a value of the `list` param!')
     // METHS
     this.builder(
       this.$sliderBody,
       this.list,
       this.$slider,
-      this.options,
+      this.csssd,
       this.panel,
       this.imgInSlideCount
     );
@@ -66,7 +62,7 @@ class Slider {
     sliderBody: HTMLDivElement,
     list: T_SLIDELIST_ITEM[][],
     slider: HTMLDivElement,
-    options: Partial<CSSStyleDeclaration>,
+    csssd: Partial<CSSStyleDeclaration>,
     panel: T_PANEL[] | undefined,
     imgInSlideCount: number
   ) {
@@ -83,7 +79,7 @@ class Slider {
       imgInSlideCount
     );
     // 4
-    this.checkOptionsStyles(options);
+    this.checkOptionsStyles(csssd);
     // 5
     this.addClickEventToSlider();
     // 6
@@ -185,21 +181,21 @@ class Slider {
     track.style.width = `${this.width * list.length}px`;
   };
 
-  checkOptionsStyles(options: Partial<CSSStyleDeclaration>) {
-    if (!Object.values(options).length) {
+  checkOptionsStyles(csssd: Partial<CSSStyleDeclaration>) {
+    if (!Object.values(csssd).length) {
       return console.warn(
         `Cant find any prop in style-options of ${this.constructor.name} constructor`
       );
     }
     // check the correction of options props values:
-    if (!Object.values(options).find((val) => val)) {
+    if (!Object.values(csssd).find((val) => val)) {
       return console.warn(
         `The values of 'Options object' are empty or falsy...`
       );
     }
     iterator(
-      Object.keys(options),
-      (key) => (this.$slider.style[key] = options[key]),
+      Object.keys(csssd),
+      (key) => (this.$slider.style[key] = csssd[key]),
       "forEach"
     );
   }
@@ -270,19 +266,12 @@ export default class AutoSlider extends Slider {
   constructor({
     isAutoSlider = false,
     list,
-    options,
+    csssd,
     panel,
     imgInSlideCount,
-    delay = 1500
-  }: {
-    isAutoSlider?: boolean;
-    list: T_SLIDELIST_ITEM[];
-    options?: Partial<CSSStyleDeclaration>;
-    panel?: T_PANEL[];
-    imgInSlideCount?: number;
-    delay?: number;
-  }) {
-    super({ options, list, panel, imgInSlideCount });
+    delay = 1800
+  }: T_SLIDER_PARAMS) {
+    super({ csssd, list, panel, imgInSlideCount });
     // LOGICAL
     this.isAutoSlider = isAutoSlider;
     this.intervalId = undefined;
