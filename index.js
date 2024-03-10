@@ -24,6 +24,8 @@ const SLIDE_LIST = [
   },
 ];
 
+const EMPTY = [];
+
 // ACCELERATE: ---
 new AutoSlider({
   list: SLIDE_LIST,
