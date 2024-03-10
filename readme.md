@@ -69,7 +69,7 @@ import AutoSlider from "./gri-slider/index.js";
 // invoke the AutoSlider class with options:
 new AutoSlider({
   list: MY_SLIDE_LIST, // required
-  options: { fontFamily: "Montserrat", color: "orangered" }, // optional
+  csssd: { fontFamily: "Montserrat", color: "orangered" }, // optional
   isAutoSlider: true, // optional
   panel: ["renderDots"], // optional
   imgInSlideCount: 1, // optional
@@ -129,7 +129,7 @@ interface I_LIST_ITEM {
 }
 ```
 
-#### 2.2 'options' - the optional prop for customizing styles of main container (.gri-slider). This is a javascript CSSStyleDeclaration object:
+#### 2.2 'csssd' - the optional prop for customizing styles of main container (.gri-slider). This is a javascript CSS_Style_Declaration object:
 
 ```javascript
 {
@@ -141,22 +141,22 @@ interface I_LIST_ITEM {
 
 new AutoSlider({
   list: SLIDE_LIST,
-  options: { color: "teal", letterSpacing: "1.2px", fontFamily: "Pacifico, cursive" },
+  csssd: { color: "teal", letterSpacing: "1.2px", fontFamily: "Pacifico, cursive" },
   panel: ["renderDots"],
 });
 ```
 
-Picture, that illustrates the options object styles above:
-![options](picts/options.png "options")
+Picture, that illustrates the csssd object styles above:
+![csssd](picts/options.png "csssd")
 
 **By default: font of slider container (.gri-slider) is 'Montserrat'**
 
-Types of values for a single prop in options object:
+Types of values for a single prop in csssd object:
 
 - **[CSSStyleProp]** --> string | number | undefined
 
 Attention:
-- **'options'** prop adds inline-styles for slider container (.gri-slider)
+- **'csssd'** prop adds inline-styles for slider container (.gri-slider)
 - **if the CSS-prop refers to inherited, slider container's children inherit the prop's value!**
 <br>
 
@@ -242,52 +242,85 @@ const MY_SLIDE_LIST = [
 ```javascript
 new AutoSlider({
   list: MY_SLIDE_LIST, // required
-  delay: 3e3, // optional,  milliseconds
+  delay: 2000, // optional, in milliseconds
 });
 ```
 
-**By default: 1500**
+**By default: 1800**
 
 #### 3. A few words about customizing html markup of gri-slider:
 
 Below, you see a recommended structure with pre-prepared html classes and ides. Almost all element's selectors are
 cooperated with source-code files! Please, Do not change it!
 <br>
-You can customize gri-slider__prev_el, gri-slider__next-el elements - by adding your own icons or svg:**
+
+You can customize elements **.gri-slider__prev_el**, **.gri-slider__next-el** by adding your own icons or svgs:
+
+- EXAMPLE WITH [ICONS FORM GOOGLE](https://fonts.google.com/icons/ "GOOGLE ICONS"):
 
 ```html
 <!-- NOTE! All selectors that provide working functionality have remained unchanged -->
 
 <section class="gri-slider">
+  <!-- click for previous slide -->
   <div class="gri-slider__prev">
-    <!-- add your icon-font-image to display prev arrow -->
-    <i class="my-icon-font-class gri-slider__prev_el" id="prev">
-      my_arrow_prev_icon
-    </i>
+    <span class="material-symbols-outlined gri-slider__prev_el" id="prev">
+      arrow_left_alt
+    </span>
   </div>
-  <!-- container for dynamic rendering of functional slider core -->
+  <!-- container with carousel inside -->
   <div class="gri-slider__body">
     <!-- RENDER -->
   </div>
+  <!-- click for the next slide -->
   <div class="gri-slider__next">
-    <!-- add your svg to display next arrow -->
-    <img
-      src="./myIcons/myIcon.svg"
-      alt="myIcon.svg"
-      class="gri-slider__next_el"
-      id="next"
-    />
+    <span class="material-symbols-outlined gri-slider__next_el" id="next">
+      arrow_right_alt
+    </span>
   </div>
 </section>
 ```
 
-#### 3. A few words about customizing styles of gri-slider:
+- EXAMPLE WITH [IcoMoon icons](https://icomoon.io/app/#/select/library "IcoMoon icons"):
+
+```html
+<!-- NOTE! All selectors that provide working functionality have remained unchanged -->
+<section class="gri-slider">
+    <div class="gri-slider__prev">
+      <span class="icon-undo gri-slider__prev_el" id="prev"></span>          
+    </div>
+    <div class="gri-slider__body">
+        <!-- RENDER -->
+    </div>
+    <div class="gri-slider__next">
+      <span class="icon-redo gri-slider__next_el" id="next"></span>          
+    </div>
+</section>
+```
+
+NOTICE moment, that pre-prepared **index.min.css** already contain some iconMoon arrow icons. Just add code below in your markUp:
+
+```html
+<!-- ARROW ICON PAIRS BELOW: -->
+  <!-- 1 -->
+<span class="icon-arrow-right"></span>
+<span class="icon-arrow-left"></span>
+  <!-- 2 -->
+<span class="icon-redo"></span>   
+<span class="icon-undo"></span>
+  <!-- 3 -->
+<span class="icon-circle-left"></span>
+<span class="icon-circle-right"></span>   
+```
+
+#### 3. Customizing styles of gri-slider:
 You can always customize styles by modifying the styles attached in **index.min.css** file
 
-The media-querries grid,suggested in pre-prepared **index.min.css** file: 
+
+#### 4. Media-querries grid:
+The media-querries grid, suggested in pre-prepared **index.min.css** file: 
 
 ```css
-
 @media screen and (max-width: 1399.98px) {
   /* props */
 }        

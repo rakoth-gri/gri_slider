@@ -7,7 +7,7 @@ const SLIDE_LIST: T_SLIDELIST_ITEM[] = [
   {
     slideImg: "./picts/guitars/at_ibanez.jpg",
     comment: "Andy Timmons <b>`CRYING`</b> Ibanez",
-    // controlImg: "./src/icons/guitar.svg",
+    controlImg: "./src/icons/guitar.svg",
   },
   {
     slideImg: "./picts/guitars/ej_strat.jpg",
@@ -29,9 +29,13 @@ const SLIDE_LIST: T_SLIDELIST_ITEM[] = [
 
 new AutoSlider({
   list: SLIDE_LIST,
-  options: { color: "purple", letterSpacing: "1.2px", fontFamily: "Pacifico, cursive" },
+  csssd: {
+    color: "purple",
+    letterSpacing: "0.7px",
+    fontFamily: "Merienda, cursive",
+  },
   isAutoSlider: true,
-  panel: ["renderDots"],
+  panel: ["renderControls"],
   imgInSlideCount: 1,
-  delay: 3000,  
+  delay: 2000,
 });
