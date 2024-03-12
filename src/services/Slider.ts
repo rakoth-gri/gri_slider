@@ -195,7 +195,7 @@ class Slider {
     }
     iterator(
       Object.keys(csssd),
-      (key) => (this.$slider.style[key] = csssd[key]),
+      (key) => (this.$slider.style[key] = csssd[key as keyof typeof csssd]),
       "forEach"
     );
   }

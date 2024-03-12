@@ -7,7 +7,8 @@
 3. TS - for type checking;
 
 #### 0. All source-code stored in the **"gri-slider"** folder
-- index.min.css  --> pre-prepared css styles (default);
+
+- index.min.css --> pre-prepared css styles (default);
 - index.js --> js-file which re-exports main Slider class and other required utils;
 - fonts --> some local fonts, already integrated in default css-file
 - types --> empty folder, generated after ts compilation
@@ -156,9 +157,10 @@ Types of values for a single prop in csssd object:
 - **[CSSStyleProp]** --> string | number | undefined
 
 Attention:
+
 - **'csssd'** prop adds inline-styles for slider container (.gri-slider)
 - **if the CSS-prop refers to inherited, slider container's children inherit the prop's value!**
-<br>
+  <br>
 
 **By default: {}**
 
@@ -218,7 +220,7 @@ By the way, if the value is ['renderControls'] - you can also specify the icon f
 ```javascript
 const MY_SLIDE_LIST = [
   // zero-index item of 'list' Array!
-  {    
+  {
     slideImg: "https://remote-site.com/picture1.jpg",
     // specifing path to the icon:
     controlImg: "./src/icons/guitar.svg",
@@ -254,7 +256,7 @@ Below, you see a recommended structure with pre-prepared html classes and ides. 
 cooperated with source-code files! Please, Do not change it!
 <br>
 
-You can customize elements **.gri-slider__prev_el**, **.gri-slider__next-el** by adding your own icons or svgs:
+You can customize elements **.gri-slider\_\_prev_el**, **.gri-slider\_\_next-el** by adding your own icons or svgs:
 
 - EXAMPLE WITH [ICONS FORM GOOGLE](https://fonts.google.com/icons/ "GOOGLE ICONS"):
 
@@ -286,15 +288,15 @@ You can customize elements **.gri-slider__prev_el**, **.gri-slider__next-el** by
 ```html
 <!-- NOTE! All selectors that provide working functionality have remained unchanged -->
 <section class="gri-slider">
-    <div class="gri-slider__prev">
-      <span class="icon-undo gri-slider__prev_el" id="prev"></span>          
-    </div>
-    <div class="gri-slider__body">
-        <!-- RENDER -->
-    </div>
-    <div class="gri-slider__next">
-      <span class="icon-redo gri-slider__next_el" id="next"></span>          
-    </div>
+  <div class="gri-slider__prev">
+    <span class="icon-undo gri-slider__prev_el" id="prev"></span>
+  </div>
+  <div class="gri-slider__body">
+    <!-- RENDER -->
+  </div>
+  <div class="gri-slider__next">
+    <span class="icon-redo gri-slider__next_el" id="next"></span>
+  </div>
 </section>
 ```
 
@@ -302,41 +304,42 @@ NOTICE moment, that pre-prepared **index.min.css** already contain some iconMoon
 
 ```html
 <!-- ARROW ICON PAIRS BELOW: -->
-  <!-- 1 -->
+<!-- 1 -->
 <span class="icon-arrow-right"></span>
 <span class="icon-arrow-left"></span>
-  <!-- 2 -->
-<span class="icon-redo"></span>   
+<!-- 2 -->
+<span class="icon-redo"></span>
 <span class="icon-undo"></span>
-  <!-- 3 -->
+<!-- 3 -->
 <span class="icon-circle-left"></span>
-<span class="icon-circle-right"></span>   
+<span class="icon-circle-right"></span>
 ```
 
 #### 3. Customizing styles of gri-slider:
+
 You can always customize styles by modifying the styles attached in **index.min.css** file
 
-
 #### 4. Media-querries grid:
-The media-querries grid, suggested in pre-prepared **index.min.css** file: 
+
+The media-querries grid, suggested in pre-prepared **index.min.css** file:
 
 ```css
 @media screen and (max-width: 1399.98px) {
   /* props */
-}        
+}
 
 @media screen and (max-width: 1199.98px) {
   /* props */
-}           
-       
+}
+
 @media screen and (max-width: 991.98px) {
   /* props */
 }
-       
+
 @media screen and (max-width: 767.98px) {
   /* props */
-} 
-                    
+}
+
 @media screen and (max-width: 575.98px) {
   /* props */
 }
