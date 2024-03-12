@@ -1,6 +1,11 @@
 import { toggleClass, iterator, checkCount, nested } from "../utils/utils.js";
 // TYPES--
-import { T_SELECTORS, T_SLIDELIST_ITEM, T_PANEL, T_SLIDER_PARAMS } from "../types/types.js";
+import {
+  T_SELECTORS,
+  T_SLIDELIST_ITEM,
+  T_PANEL,
+  T_SLIDER_PARAMS,
+} from "../types/types.js";
 
 const EVENT_SELECTORS: T_SELECTORS[] = [
   ".gri-slider__prev",
@@ -22,12 +27,14 @@ class Slider {
   width: null | number;
   panel: T_PANEL[] | undefined;
   imgInSlideCount: number;
+  arrows: string[];
 
   constructor({
     list,
     csssd = {},
     panel = undefined,
     imgInSlideCount = 1,
+    arrows = [],
   }: T_SLIDER_PARAMS) {
     // DOM-ELEMS
     this.$sliderBody = document.querySelector(
@@ -38,15 +45,19 @@ class Slider {
     this.$imageBlocks = null;
     this.$controls = null;
     this.$dots = null;
+    this.arrows = arrows;
     // optional css.declaration object
     this.csssd = csssd;
     // LOGIC VARS
     this.panel = panel;
     this.imgInSlideCount = imgInSlideCount;
-    this.list = nested(list, this.imgInSlideCount);    
+    this.list = nested(list, this.imgInSlideCount);
     this.count = 0;
     this.width = null;
-    if (!list.length) throw new Error('You should pass non-empty Array as a value of the `list` param!')
+    if (!list.length)
+      throw new Error(
+        "You should pass non-empty Array as a value of the `list` param!"
+      );
     // METHS
     this.builder(
       this.$sliderBody,
@@ -54,7 +65,8 @@ class Slider {
       this.$slider,
       this.csssd,
       this.panel,
-      this.imgInSlideCount
+      this.imgInSlideCount,
+      this.arrows
     );
   }
 
@@ -64,9 +76,13 @@ class Slider {
     slider: HTMLDivElement,
     csssd: Partial<CSSStyleDeclaration>,
     panel: T_PANEL[] | undefined,
-    imgInSlideCount: number
+    imgInSlideCount: number,
+    arrows: string[]
   ) {
     // order to invoke:
+    // 0
+    arrows.length && this.renderArrows(arrows);
+
     // 1
     this.render(sliderBody, list);
     // 2
@@ -85,6 +101,8 @@ class Slider {
     // 6
     this.resize();
   }
+
+  // RENDERING --------------------------------
 
   render(sliderBody: HTMLDivElement, list: T_SLIDELIST_ITEM[][]) {
     sliderBody.innerHTML = `<div class="gri-slider__track">
@@ -167,6 +185,24 @@ class Slider {
     ) as HTMLDivElement[];
   }
 
+  renderArrows(arrows: string[]) {
+    let prev = "gri-slider__prev";
+    let next = "gri-slider__next";
+
+    iterator(
+      arrows,
+      (arrow) =>
+        arrow.includes(prev)
+          ? ((document.querySelector(`.${prev}`) as HTMLElement).innerHTML =
+              arrow)
+          : ((document.querySelector(`.${next}`) as HTMLElement).innerHTML =
+              arrow),
+      "forEach"
+    );
+  }
+
+  // STYLING --------------------------------
+
   trackStyles = (
     track: HTMLDivElement,
     images: NodeListOf<HTMLDivElement>,
@@ -200,6 +236,19 @@ class Slider {
     );
   }
 
+  resize() {
+    window.addEventListener("resize", () =>
+      this.trackStyles(
+        this.$track as HTMLDivElement,
+        this.$imageBlocks as NodeListOf<HTMLDivElement>,
+        this.list,
+        this.imgInSlideCount
+      )
+    );
+  }
+
+  // ACTIONS ------------------------------------------
+
   moveTrack(count: number) {
     (this.$track as HTMLDivElement).style.transform = `translate3D(-${
       count * (this.width as number)
@@ -214,17 +263,6 @@ class Slider {
         ind === i && elem.classList.add("active");
       },
       "forEach"
-    );
-  }
-
-  resize() {
-    window.addEventListener("resize", () =>
-      this.trackStyles(
-        this.$track as HTMLDivElement,
-        this.$imageBlocks as NodeListOf<HTMLDivElement>,
-        this.list,
-        this.imgInSlideCount
-      )
     );
   }
 
@@ -258,6 +296,8 @@ class Slider {
   }
 }
 
+// CLASS_INHERITER
+
 export default class AutoSlider extends Slider {
   isAutoSlider: boolean;
   intervalId: undefined | number;
@@ -269,9 +309,10 @@ export default class AutoSlider extends Slider {
     csssd,
     panel,
     imgInSlideCount,
-    delay = 1800
+    delay = 1800,
+    arrows,
   }: T_SLIDER_PARAMS) {
-    super({ csssd, list, panel, imgInSlideCount });
+    super({ csssd, list, panel, imgInSlideCount, arrows });
     // LOGICAL
     this.isAutoSlider = isAutoSlider;
     this.intervalId = undefined;

@@ -250,15 +250,47 @@ new AutoSlider({
 
 **By default: 1800**
 
+#### 2.7 'arrows' - the optional property, helps to customize the apperance of gri-slider functional arrows:
+
+- the customized part of the slider:
+  ![arrows](picts/arrows.png "arrows")
+
+
+```javascript
+new AutoSlider({
+  list: MY_SLIDE_LIST, // required
+  // connect your favourite icon font resourse, put html-code of chosen icons and don't FORGET
+  // to complete code with functional classes and ides of gri-slider (read chapter below) 
+  arrows: [
+    `<span class="icon-circle-right gri-slider__next_el" id="next"></span>`,
+    `<span class="icon-circle-left gri-slider__prev_el" id="prev"></span>`,
+  ], // optional
+});
+```
+
+```html
+  <section class="gri-slider">
+      <div class="gri-slider__prev">
+        <!-- ARROW IS RENDERED HERE -->
+      </div>
+      <div class="gri-slider__body"></div>
+      <div class="gri-slider__next">
+        <!-- ARROW IS RENDERED HERE -->
+      </div>
+  </section
+```
+
+**By default: []**
+
 #### 3. A few words about customizing html markup of gri-slider:
 
 Below, you see a recommended structure with pre-prepared html classes and ides. Almost all element's selectors are
-cooperated with source-code files! Please, Do not change it!
+cooperated with source-code files. Please, Do not change them!
 <br>
 
 You can customize elements **.gri-slider\_\_prev_el**, **.gri-slider\_\_next-el** by adding your own icons or svgs:
 
-- EXAMPLE WITH [ICONS FORM GOOGLE](https://fonts.google.com/icons/ "GOOGLE ICONS"):
+- EXAMPLE WITH [GOOGLE icons](https://fonts.google.com/icons/ "GOOGLE ICONS"):
 
 ```html
 <!-- NOTE! All selectors that provide working functionality have remained unchanged -->
@@ -303,7 +335,7 @@ You can customize elements **.gri-slider\_\_prev_el**, **.gri-slider\_\_next-el*
 NOTICE moment, that pre-prepared **index.min.css** already contain some iconMoon arrow icons. Just add code below in your markUp:
 
 ```html
-<!-- ARROW ICON PAIRS BELOW: -->
+<!-- PRE-PARED ICOMOON PAIRS, DON'T FORGET TO PUT FUNCTIONAL CLASSES AND ID INSIDE THEM (see examples above): -->
 <!-- 1 -->
 <span class="icon-arrow-right"></span>
 <span class="icon-arrow-left"></span>
@@ -315,11 +347,11 @@ NOTICE moment, that pre-prepared **index.min.css** already contain some iconMoon
 <span class="icon-circle-right"></span>
 ```
 
-#### 3. Customizing styles of gri-slider:
+#### 4. Customizing styles of gri-slider:
 
 You can always customize styles by modifying the styles attached in **index.min.css** file
 
-#### 4. Media-querries grid:
+#### 5. Media-querries grid:
 
 The media-querries grid, suggested in pre-prepared **index.min.css** file:
 
@@ -345,4 +377,4 @@ The media-querries grid, suggested in pre-prepared **index.min.css** file:
 }
 ```
 
-#### 4. The main Slider class includes 'resize' method, which automatically adjusts the carousel to current screen resolution!
+#### 6. The main Slider class includes 'resize' method, which automatically adjusts the carousel to current screen resolution!

@@ -20,4 +20,5 @@ export type T_SLIDER_PARAMS = {
   panel?: T_PANEL[],
   imgInSlideCount?: 1,
   delay?: number,
+  arrows?: string[]
 }
