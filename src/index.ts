@@ -28,9 +28,9 @@ new AutoSlider({
   csssd: {
     color: "purple",
     letterSpacing: "0.7px",
-    fontFamily: "Merienda, cursive",
+    fontFamily: "Merienda",
   },
-  isAutoSlider: true,
+  // isAutoSlider: true,
   panel: ["renderControls"],
   imgInSlideCount: 1,
   delay: 2000,

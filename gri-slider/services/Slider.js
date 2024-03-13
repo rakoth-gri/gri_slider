@@ -24,6 +24,66 @@ var Slider = (function () {
     function Slider(_a) {
         var _this = this;
         var list = _a.list, _b = _a.csssd, csssd = _b === void 0 ? {} : _b, _c = _a.panel, panel = _c === void 0 ? undefined : _c, _d = _a.imgInSlideCount, imgInSlideCount = _d === void 0 ? 1 : _d, _e = _a.arrows, arrows = _e === void 0 ? [] : _e;
+        this.mouseDown = function (e) {
+            if (!e.target.closest(".gri-slider__img"))
+                return;
+            _this.isGrabbing = true;
+        };
+        this.mouseMove = function (e) {
+            if (!e.target.closest(".gri-slider__img"))
+                return;
+            if (!_this.isGrabbing)
+                return;
+            if (!(e.target instanceof HTMLElement))
+                return;
+            if (!_this.startCursorPos)
+                _this.startCursorPos = e.x;
+        };
+        this.mouseUp = function (e) {
+            if (!e.target.closest(".gri-slider__img"))
+                return;
+            _this.endCursorPos = e.x;
+            var diff = _this.endCursorPos - _this.startCursorPos;
+            if (diff > 0 && diff > 70) {
+                _this.count++;
+            }
+            if (diff < 0 && diff < -80) {
+                _this.count--;
+            }
+            _this.prepareForMoveTrack();
+            _this.isGrabbing = false;
+            _this.startCursorPos = null;
+        };
+        this.touchStart = function (e) {
+            if (!e.target.closest(".gri-slider__img"))
+                return;
+            _this.isGrabbing = true;
+        };
+        this.touchMove = function (e) {
+            if (!e.target.closest(".gri-slider__img"))
+                return;
+            if (!_this.isGrabbing)
+                return;
+            if (!(e.target instanceof HTMLElement))
+                return;
+            if (!_this.startCursorPos)
+                _this.startCursorPos = e.x;
+        };
+        this.touchEnd = function (e) {
+            if (!e.target.closest(".gri-slider__img"))
+                return;
+            _this.endCursorPos = e.x;
+            var diff = _this.endCursorPos - _this.startCursorPos;
+            if (diff > 0 && diff > 70) {
+                _this.count++;
+            }
+            if (diff < 0 && diff < -80) {
+                _this.count--;
+            }
+            _this.prepareForMoveTrack();
+            _this.isGrabbing = false;
+            _this.startCursorPos = null;
+        };
         this.trackStyles = function (track, images, list, imgInSlideCount) {
             _this.width = _this.$sliderBody.offsetWidth;
             images.forEach(function (img) {
@@ -47,10 +107,7 @@ var Slider = (function () {
                     _this.count = +e.target.id;
                     break;
             }
-            _this.count = checkCount(_this.count, _this.list);
-            _this.panel &&
-                _this.selectActiveElem(_this.count, _this.$controls ? "$controls" : "$dots");
-            _this.moveTrack(_this.count);
+            _this.prepareForMoveTrack();
         };
         this.$sliderBody = document.querySelector(".gri-slider__body");
         this.$slider = document.querySelector(".gri-slider");
@@ -65,6 +122,9 @@ var Slider = (function () {
         this.list = nested(list, this.imgInSlideCount);
         this.count = 0;
         this.width = null;
+        this.isGrabbing = false;
+        this.startCursorPos = null;
+        this.endCursorPos = null;
         if (!list.length)
             throw new Error("You should pass non-empty Array as a value of the `list` param!");
         this.builder(this.$sliderBody, this.list, this.$slider, this.csssd, this.panel, this.imgInSlideCount, this.arrows);
@@ -77,6 +137,9 @@ var Slider = (function () {
         this.checkOptionsStyles(csssd);
         this.addClickEventToSlider();
         this.resize();
+        this.addSwipeEventForDesktop();
+        this.addSwipeEventForMobile();
+        this.disableContextMenu();
     };
     Slider.prototype.render = function (sliderBody, list) {
         sliderBody.innerHTML = "<div class=\"gri-slider__track\">\n        ".concat(iterator(list, function (slidesArr) { return "\n            ".concat(slidesArr
@@ -87,6 +150,9 @@ var Slider = (function () {
             .join(""), "\n            "); }, "map"), "            \n    </div>        \n    ");
         this.$track = document.querySelector(".gri-slider__track");
         this.$imageBlocks = document.querySelectorAll(".gri-slider__img");
+        this.$imageBlocks.forEach(function (imageBlock) {
+            imageBlock.addEventListener("dragstart", function (e) { return e.preventDefault(); });
+        });
     };
     Slider.prototype.renderControls = function (slider, list) {
         var panelIcon = list[0][0].controlImg;
@@ -114,6 +180,12 @@ var Slider = (function () {
                     arrow);
         }, "forEach");
     };
+    Slider.prototype.disableContextMenu = function () {
+        this.$slider.addEventListener("contextmenu", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+    };
     Slider.prototype.checkOptionsStyles = function (csssd) {
         var _this = this;
         if (!Object.values(csssd).length) {
@@ -130,6 +202,12 @@ var Slider = (function () {
             return _this.trackStyles(_this.$track, _this.$imageBlocks, _this.list, _this.imgInSlideCount);
         });
     };
+    Slider.prototype.prepareForMoveTrack = function () {
+        this.count = checkCount(this.count, this.list);
+        this.panel &&
+            this.selectActiveElem(this.count, this.$controls ? "$controls" : "$dots");
+        this.moveTrack(this.count);
+    };
     Slider.prototype.moveTrack = function (count) {
         this.$track.style.transform = "translate3D(-".concat(count * this.width, "px, 0px, 0px)");
     };
@@ -141,6 +219,16 @@ var Slider = (function () {
     };
     Slider.prototype.addClickEventToSlider = function () {
         this.$slider.addEventListener("click", this.addClickEventToSliderHandler);
+    };
+    Slider.prototype.addSwipeEventForDesktop = function () {
+        this.$track.addEventListener("mousedown", this.mouseDown);
+        this.$track.addEventListener("mousemove", this.mouseMove);
+        this.$track.addEventListener("mouseup", this.mouseUp);
+    };
+    Slider.prototype.addSwipeEventForMobile = function () {
+        this.$track.addEventListener("touchstart", this.touchStart);
+        this.$track.addEventListener("touchmove", this.touchMove);
+        this.$track.addEventListener("touchend", this.touchEnd);
     };
     return Slider;
 }());

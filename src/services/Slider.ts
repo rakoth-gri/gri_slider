@@ -28,6 +28,10 @@ class Slider {
   panel: T_PANEL[] | undefined;
   imgInSlideCount: number;
   arrows: string[];
+  // TOUCH
+  isGrabbing: boolean;
+  startCursorPos: null | number;
+  endCursorPos: null | number;
 
   constructor({
     list,
@@ -46,7 +50,7 @@ class Slider {
     this.$controls = null;
     this.$dots = null;
     this.arrows = arrows;
-    // optional css.declaration object
+    // optional css.declaration:
     this.csssd = csssd;
     // LOGIC VARS
     this.panel = panel;
@@ -54,6 +58,11 @@ class Slider {
     this.list = nested(list, this.imgInSlideCount);
     this.count = 0;
     this.width = null;
+    // TOUCH LOGIC
+    this.isGrabbing = false;
+    this.startCursorPos = null;
+    this.endCursorPos = null;
+    // HANDLE EMPTY ARRAY
     if (!list.length)
       throw new Error(
         "You should pass non-empty Array as a value of the `list` param!"
@@ -100,6 +109,12 @@ class Slider {
     this.addClickEventToSlider();
     // 6
     this.resize();
+    // 7
+    this.addSwipeEventForDesktop();
+    // 8
+    this.addSwipeEventForMobile();
+    // 9
+    this.disableContextMenu();
   }
 
   // RENDERING --------------------------------
@@ -126,6 +141,10 @@ class Slider {
 
     this.$track = document.querySelector(".gri-slider__track");
     this.$imageBlocks = document.querySelectorAll(".gri-slider__img");
+    // отменяем поведение по-умолчанию, элементы не захватываются....
+    this.$imageBlocks.forEach((imageBlock) => {
+      imageBlock.addEventListener("dragstart", (e) => e.preventDefault());
+    });
   }
 
   renderControls(slider: HTMLDivElement, list: T_SLIDELIST_ITEM[][]) {
@@ -136,7 +155,7 @@ class Slider {
       `
     <section class='gri-slider__panel'>
      ${
-      panelIcon
+       panelIcon
          ? iterator(
              list,
              (_, i) =>
@@ -201,6 +220,79 @@ class Slider {
     );
   }
 
+  // SWIPE EVENTS FOR DESKTOP -------------
+
+  disableContextMenu() {
+    this.$slider.addEventListener("contextmenu", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+    });
+  }
+
+  mouseDown = (e: MouseEvent) => {
+    if (!(e.target as HTMLDivElement).closest(".gri-slider__img")) return;
+    this.isGrabbing = true;
+  };
+
+  mouseMove = (e: MouseEvent) => {
+    if (!(e.target as HTMLDivElement).closest(".gri-slider__img")) return;
+    if (!this.isGrabbing) return;
+    if (!(e.target instanceof HTMLElement)) return;
+    if (!this.startCursorPos) this.startCursorPos = e.x;
+  };
+
+  mouseUp = (e: MouseEvent) => {
+    if (!(e.target as HTMLDivElement).closest(".gri-slider__img")) return;
+    this.endCursorPos = e.x;
+    const diff =
+      (this.endCursorPos as number) - (this.startCursorPos as number);
+
+    if (diff > 0 && diff > 70) {
+      this.count++;
+    }
+
+    if (diff < 0 && diff < -80) {
+      this.count--;
+    }
+
+    this.prepareForMoveTrack();
+    this.isGrabbing = false;
+    this.startCursorPos = null;
+  };
+
+  // SWIPE EVENTS FOR MOBILE -------------
+
+  touchStart = (e: TouchEvent) => {
+    if (!(e.target as HTMLDivElement).closest(".gri-slider__img")) return;
+    this.isGrabbing = true;
+  };
+
+  touchMove = (e: TouchEvent) => {
+    if (!(e.target as HTMLDivElement).closest(".gri-slider__img")) return;
+    if (!this.isGrabbing) return;
+    if (!(e.target instanceof HTMLElement)) return;
+    if (!this.startCursorPos) this.startCursorPos = e.x;
+  };
+
+  touchEnd = (e: TouchEvent) => {
+    if (!(e.target as HTMLDivElement).closest(".gri-slider__img")) return;
+    this.endCursorPos = e.x;
+    const diff =
+      (this.endCursorPos as number) - (this.startCursorPos as number);
+
+    if (diff > 0 && diff > 70) {
+      this.count++;
+    }
+
+    if (diff < 0 && diff < -80) {
+      this.count--;
+    }
+
+    this.prepareForMoveTrack();
+    this.isGrabbing = false;
+    this.startCursorPos = null;
+  };
+
   // STYLING --------------------------------
 
   trackStyles = (
@@ -249,6 +341,13 @@ class Slider {
 
   // ACTIONS ------------------------------------------
 
+  prepareForMoveTrack() {
+    this.count = checkCount(this.count, this.list);
+    this.panel &&
+      this.selectActiveElem(this.count, this.$controls ? "$controls" : "$dots");
+    this.moveTrack(this.count);
+  }
+
   moveTrack(count: number) {
     (this.$track as HTMLDivElement).style.transform = `translate3D(-${
       count * (this.width as number)
@@ -285,14 +384,39 @@ class Slider {
         this.count = +e.target.id;
         break;
     }
-    this.count = checkCount(this.count, this.list);
-    this.panel &&
-      this.selectActiveElem(this.count, this.$controls ? "$controls" : "$dots");
-    this.moveTrack(this.count);
+    this.prepareForMoveTrack();
   };
 
   addClickEventToSlider() {
     this.$slider.addEventListener("click", this.addClickEventToSliderHandler);
+  }
+
+  addSwipeEventForDesktop() {
+    (this.$track as HTMLDivElement).addEventListener(
+      "mousedown",
+      this.mouseDown
+    );
+
+    (this.$track as HTMLDivElement).addEventListener(
+      "mousemove",
+      this.mouseMove
+    );
+
+    (this.$track as HTMLDivElement).addEventListener("mouseup", this.mouseUp);
+  }
+
+  addSwipeEventForMobile() {
+    (this.$track as HTMLDivElement).addEventListener(
+      "touchstart",
+      this.touchStart
+    );
+
+    (this.$track as HTMLDivElement).addEventListener(
+      "touchmove",
+      this.touchMove
+    );
+
+    (this.$track as HTMLDivElement).addEventListener("touchend", this.touchEnd);
   }
 }
 
