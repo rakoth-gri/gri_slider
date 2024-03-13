@@ -62,20 +62,98 @@
           <!-- RENDER -->
         </div>
       </section>
-      <figure>
+      <figure class="audio">
         <figcaption>Listen to Eric Johnson's SRV:</figcaption>
-        <audio
-          controls
-          src="./src/audio/ej_srv.mp3"
-          loop
-          id="audio"
-          autoplay
-        ></audio>
+        <audio src="./src/audio/ej_srv.mp3" id="audio"></audio>
+        <div class="audio__panel">
+          <span class="material-symbols-outlined audio__play">
+            play_arrow
+          </span>
+          <span class="material-symbols-outlined audio__pause"> pause </span>
+          <span class="material-symbols-outlined audio__stop">
+            stop_circle
+          </span>
+          <span class="material-symbols-outlined audio__loop"> laps </span>
+          <span>            
+            <progress
+              class="audio__progress"
+              min="0"
+              max="100"
+              value="1"
+            ></progress>
+          </span>
+          <span class="material-symbols-outlined audio__mute"> volume_off </span>
+        </div>
       </figure>
     </main>
 
     <script>
-      document.getElementById("audio").volume = 0.05;
+      const audio = document.getElementById("audio");
+      const playBtn = document.querySelector(".audio__play");
+      const pauseBtn = document.querySelector(".audio__pause");
+      const progress = document.querySelector(".audio__progress");
+      const stopBtn = document.querySelector(".audio__stop");
+      const loopBtn = document.querySelector(".audio__loop");
+      const muteBtn = document.querySelector(".audio__mute");
+
+
+      audio.oncanplaythrough = function () {
+        this.volume = 0.15;
+      };
+
+      playBtn.onclick = function () {
+        if (audio.paused) {
+          playAudio();
+          this.style.color = "gold";
+        } else {
+          audio.pause();
+          this.style.color = null;
+        }
+      };
+
+      stopBtn.onclick = function () {
+        if (!audio.paused) {
+          audio.pause();
+          audio.currentTime = 0;
+        }
+      };
+
+      muteBtn.onclick = function () {
+        if (audio.volume) {
+          audio.volume = 0;
+          this.style.color = "gold";
+          return;
+        }
+        this.style.color = null;
+        return audio.volume = 0.15
+      };
+
+      loopBtn.onclick = function () {
+        if (!audio.loop) {
+          audio.loop = true;
+          this.style.color = "gold";
+        } else {
+          audio.loop = false;
+          this.style.color = null;
+        }
+      };
+
+      pauseBtn.onclick = function () {
+        if (!audio.paused) audio.pause();
+      };
+
+      audio.addEventListener("timeupdate", function () {
+        currCompletePerc = (this.currentTime * 100) / this.duration;
+        progress.value = currCompletePerc;
+      });
+
+      async function playAudio() {
+        try {
+          await audio.play();
+        } catch (err) {
+          console.error(err.message);
+        }
+      }
     </script>
   </body>
 </html>

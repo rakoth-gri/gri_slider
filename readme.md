@@ -11,7 +11,7 @@
 - index.min.css --> pre-prepared css styles (default);
 - index.js --> js-file which re-exports main Slider class and other required utils;
 - fonts --> some local fonts, already integrated in default css-file
-- types --> empty folder, generated after ts compilation
+- types --> empty folder, generated after ts-compilation
 
 ### SEE PREVIEW [RIGHT NOW!!](https://rakoth-gri.github.io/gri_slider/ "GRI_SLIDER IN ACTION")!
 

@@ -12,11 +12,7 @@ const SLIDE_LIST: T_SLIDELIST_ITEM[] = [
   {
     slideImg: "./picts/guitars/ej_strat.jpg",
     comment: "Eric Johnson's <b>`DESERT ROSE`</b> Fender Strat",
-  },
-  {
-    slideImg: "./picts/guitars/pg_FRM_150TR.jpg",
-    comment: "Paul Guilbert's FRM_150TR Ibanez",
-  },
+  },  
   {
     slideImg: "./picts/guitars/sv_JEM777.jpg",
     comment: "Steve Vai's <strong>` PRAYING `</strong> Ibanez JEM777",

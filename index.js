@@ -11,10 +11,6 @@ const SLIDE_LIST = [
     comment: "Eric Johnson's <b>`DESERT ROSE`</b> Fender Strat",
   },
   {
-    slideImg: "./picts/guitars/pg_FRM_150TR.jpg",
-    comment: "Paul Guilbert's FRM_150TR Ibanez",
-  },
-  {
     slideImg: "./picts/guitars/sv_JEM777.jpg",
     comment: "Steve Vai's <strong>`PRAYING`</strong> Ibanez JEM777",
   },
@@ -35,12 +31,12 @@ new AutoSlider({
     letterSpacing: "0.7px",
     fontWeight: 700,
   },
-  isAutoSlider: true,
+  isAutoSlider: false,
   panel: ["renderControls"],
   imgInSlideCount: 1,
   delay: 2e3,
   arrows: [
     `<span class="icon-circle-right gri-slider__next_el" id="next"></span>`,
     `<span class="icon-circle-left gri-slider__prev_el" id="prev"></span>`,
-  ],  
+  ],
 });
