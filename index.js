@@ -31,7 +31,7 @@ new AutoSlider({
     letterSpacing: "0.7px",
     fontWeight: 700,
   },
-  isAutoSlider: false,
+  isAutoSlider: true,
   panel: ["renderControls"],
   imgInSlideCount: 1,
   delay: 2e3,
