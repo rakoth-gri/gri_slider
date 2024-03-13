@@ -1,0 +1,105 @@
+figure {
+  font-family: "Merienda";
+  bottom: 3%;
+  position: absolute;
+  right: 3%;
+  color: purple;
+}
+
+figcaption {
+  width: 80%;
+  margin: 0.35rem auto;
+}
+
+.audio {
+  padding: 0.5rem;
+  width: 18%;
+  text-align: center;
+}
+
+.audio__panel {
+  user-select: none;
+  padding: 0.75rem;
+  border-radius: 1rem;
+  background-color: #a73e8f;
+  color: whitesmoke;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  box-shadow: 2px 2px 6px pink, -2px -2px 6px pink;
+}
+
+.audio__panel span {
+  font-size: 1.5em;
+  cursor: pointer;
+  transition: 0.15s all linear;
+  display: flex;
+  font-weight: 300;
+}
+
+.audio__panel span.active {
+  color: gold;
+}
+
+.audio__panel span:hover {
+  transform: scale(1.1);
+}
+
+.audio__progress {
+  width: 3.5em;
+  height: 15px;
+}
+
+@media screen and (max-width: 1399.98px) {
+  .audio {
+    width: 22%;
+  }
+}
+
+@media screen and (max-width: 1199.98px) {
+  .audio {
+    width: 27%;
+  }
+
+  .audio__panel {
+    padding: 0.5rem;
+  }
+}
+
+@media screen and (max-width: 991.98px) {
+  .audio {
+    width: 33%;
+  }
+
+  .audio__progress {
+    width: 3.2em;
+  }
+}
+
+@media screen and (max-width: 767.98px) {
+  .audio {
+    width: 42%;
+  }
+
+  .audio__panel span {
+    font-size: 1.45em;
+  }
+}
+
+@media screen and (max-width: 575.98px) {
+  figcaption {
+    font-size: 15px;
+  }
+
+  .audio {
+    width: 60%;
+  }
+
+  .audio__progress {
+    width: 3.1em;
+  }
+
+  .audio__panel span {
+    font-size: 1.35em;
+  }
+}

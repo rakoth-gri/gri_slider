@@ -129,19 +129,19 @@ class Slider {
   }
 
   renderControls(slider: HTMLDivElement, list: T_SLIDELIST_ITEM[][]) {
-    const image = list[0][0].controlImg;
+    const panelIcon = list[0][0].controlImg;
 
     slider.insertAdjacentHTML(
       "beforeend",
       `
     <section class='gri-slider__panel'>
      ${
-       image
+      panelIcon
          ? iterator(
              list,
              (_, i) =>
                `<div class='gri-slider__panel_btn ${i === 0 ? "active" : ""}'>
-                  <img src="${image}" id='${i}' loading="lazy"/>                      
+                  <img src="${panelIcon}" id='${i}' loading="lazy"/>                      
                 </div>`,
              "map"
            )

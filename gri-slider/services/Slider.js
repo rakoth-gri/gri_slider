@@ -89,10 +89,10 @@ var Slider = (function () {
         this.$imageBlocks = document.querySelectorAll(".gri-slider__img");
     };
     Slider.prototype.renderControls = function (slider, list) {
-        var image = list[0][0].controlImg;
-        slider.insertAdjacentHTML("beforeend", "\n    <section class='gri-slider__panel'>\n     ".concat(image
+        var panelIcon = list[0][0].controlImg;
+        slider.insertAdjacentHTML("beforeend", "\n    <section class='gri-slider__panel'>\n     ".concat(panelIcon
             ? iterator(list, function (_, i) {
-                return "<div class='gri-slider__panel_btn ".concat(i === 0 ? "active" : "", "'>\n                  <img src=\"").concat(image, "\" id='").concat(i, "' loading=\"lazy\"/>                      \n                </div>");
+                return "<div class='gri-slider__panel_btn ".concat(i === 0 ? "active" : "", "'>\n                  <img src=\"").concat(panelIcon, "\" id='").concat(i, "' loading=\"lazy\"/>                      \n                </div>");
             }, "map")
             : iterator(list, function (_, i) { return "\n                <div class='gri-slider__panel_btn ".concat(i === 0 ? "active" : "", "' id='").concat(i, "' style=\"border: 1px solid\">                  \n                    ").concat(i + 1, "\n                </div>"); }, "map"), "\n  \t</section>\n  "));
         this.$controls = Array.from(document.querySelectorAll(".gri-slider__panel_btn"));

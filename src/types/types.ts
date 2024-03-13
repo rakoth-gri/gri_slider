@@ -18,7 +18,7 @@ export type T_SLIDER_PARAMS = {
   csssd?: Partial<CSSStyleDeclaration>,
   isAutoSlider?: boolean,
   panel?: T_PANEL[],
-  imgInSlideCount?: 1,
+  imgInSlideCount?: number,
   delay?: number,
   arrows?: string[]
 }

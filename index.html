@@ -11,7 +11,9 @@
     />
     <title>SLIDER</title>
     <link rel="stylesheet" href="./gri-slider/index.min.css" />
-    <script src="index.js" defer type="module"></script>
+    <link rel="stylesheet" href="audio.css" />
+    <script src="./gri-slider/index.js" defer type="module"></script>
+    <script src="audio.js" async></script>
     <style>
       body {
         background-color: #94b3b3;
@@ -32,20 +34,7 @@
         position: absolute;
         left: 3%;
         color: purple;
-      }
-
-      figure {
-        font-family: "Merienda";
-        bottom: 3%;
-        position: absolute;
-        right: 3%;
-        color: purple;
-      }
-
-      figcaption {
-        width: 80%;
-        margin: 0.35rem auto;
-      }
+      }      
     </style>
   </head>
   <body>
@@ -86,74 +75,6 @@
         </div>
       </figure>
     </main>
-
-    <script>
-      const audio = document.getElementById("audio");
-      const playBtn = document.querySelector(".audio__play");
-      const pauseBtn = document.querySelector(".audio__pause");
-      const progress = document.querySelector(".audio__progress");
-      const stopBtn = document.querySelector(".audio__stop");
-      const loopBtn = document.querySelector(".audio__loop");
-      const muteBtn = document.querySelector(".audio__mute");
-
-
-      audio.oncanplaythrough = function () {
-        this.volume = 0.15;
-      };
-
-      playBtn.onclick = function () {
-        if (audio.paused) {
-          playAudio();
-          this.style.color = "gold";
-        } else {
-          audio.pause();
-          this.style.color = null;
-        }
-      };
-
-      stopBtn.onclick = function () {
-        if (!audio.paused) {
-          audio.pause();
-          audio.currentTime = 0;
-        }
-      };
-
-      muteBtn.onclick = function () {
-        if (audio.volume) {
-          audio.volume = 0;
-          this.style.color = "gold";
-          return;
-        }
-        this.style.color = null;
-        return audio.volume = 0.15
-      };
-
-      loopBtn.onclick = function () {
-        if (!audio.loop) {
-          audio.loop = true;
-          this.style.color = "gold";
-        } else {
-          audio.loop = false;
-          this.style.color = null;
-        }
-      };
-
-      pauseBtn.onclick = function () {
-        if (!audio.paused) audio.pause();
-      };
-
-      audio.addEventListener("timeupdate", function () {
-        currCompletePerc = (this.currentTime * 100) / this.duration;
-        progress.value = currCompletePerc;
-      });
-
-      async function playAudio() {
-        try {
-          await audio.play();
-        } catch (err) {
-          console.error(err.message);
-        }
-      }
-    </script>
+    
   </body>
 </html>
