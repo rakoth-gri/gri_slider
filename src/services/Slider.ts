@@ -243,6 +243,7 @@ class Slider {
 
   mouseUp = (e: MouseEvent) => {
     if (!(e.target as HTMLDivElement).closest(".gri-slider__img")) return;
+    if (!this.startCursorPos) return;
     this.endCursorPos = e.x;
     const diff =
       (this.endCursorPos as number) - (this.startCursorPos as number);
@@ -265,11 +266,13 @@ class Slider {
   touchStart = (e: TouchEvent) => {
     if (!(e.target as HTMLDivElement).closest(".gri-slider__img")) return;
     this.isGrabbing = true;
+    console.log("touchStart");
   };
 
   touchMove = (e: TouchEvent) => {
     if (!(e.target as HTMLDivElement).closest(".gri-slider__img")) return;
     if (!this.isGrabbing) return;
+    console.log("touchMove");
     if (!(e.target instanceof HTMLElement)) return;
     if (!this.startCursorPos) this.startCursorPos = e.x;
   };

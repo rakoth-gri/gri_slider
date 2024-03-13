@@ -42,6 +42,8 @@ var Slider = (function () {
         this.mouseUp = function (e) {
             if (!e.target.closest(".gri-slider__img"))
                 return;
+            if (!_this.startCursorPos)
+                return;
             _this.endCursorPos = e.x;
             var diff = _this.endCursorPos - _this.startCursorPos;
             if (diff > 0 && diff > 70) {
@@ -58,12 +60,14 @@ var Slider = (function () {
             if (!e.target.closest(".gri-slider__img"))
                 return;
             _this.isGrabbing = true;
+            console.log("touchStart");
         };
         this.touchMove = function (e) {
             if (!e.target.closest(".gri-slider__img"))
                 return;
             if (!_this.isGrabbing)
                 return;
+            console.log("touchMove");
             if (!(e.target instanceof HTMLElement))
                 return;
             if (!_this.startCursorPos)
