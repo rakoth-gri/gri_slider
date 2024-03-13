@@ -11,7 +11,9 @@ export const iterator = <T, K extends T_ARRAY_METHODS, R>(
   cb: (item: T, i: number) => R,
   method: K
 ) => {
+  // @ts-ignore
   if (method === "map") return list[method](cb).join("");
+  // @ts-ignore
   return list[method](cb);
 };
 

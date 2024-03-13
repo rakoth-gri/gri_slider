@@ -49,7 +49,7 @@ var Slider = (function () {
             if (diff > 0 && diff > 70) {
                 _this.count++;
             }
-            if (diff < 0 && diff < -80) {
+            if (diff < 0 && diff < -70) {
                 _this.count--;
             }
             _this.prepareForMoveTrack();
@@ -60,28 +60,28 @@ var Slider = (function () {
             if (!e.target.closest(".gri-slider__img"))
                 return;
             _this.isGrabbing = true;
-            console.log("touchStart");
         };
         this.touchMove = function (e) {
             if (!e.target.closest(".gri-slider__img"))
                 return;
             if (!_this.isGrabbing)
                 return;
-            console.log("touchMove");
             if (!(e.target instanceof HTMLElement))
                 return;
             if (!_this.startCursorPos)
-                _this.startCursorPos = e.x;
+                _this.startCursorPos = e.targetTouches[0].clientX;
         };
         this.touchEnd = function (e) {
             if (!e.target.closest(".gri-slider__img"))
                 return;
-            _this.endCursorPos = e.x;
+            if (!_this.startCursorPos)
+                return;
+            _this.endCursorPos = e.changedTouches[0].clientX;
             var diff = _this.endCursorPos - _this.startCursorPos;
             if (diff > 0 && diff > 70) {
                 _this.count++;
             }
-            if (diff < 0 && diff < -80) {
+            if (diff < 0 && diff < -70) {
                 _this.count--;
             }
             _this.prepareForMoveTrack();

@@ -252,7 +252,7 @@ class Slider {
       this.count++;
     }
 
-    if (diff < 0 && diff < -80) {
+    if (diff < 0 && diff < -70) {
       this.count--;
     }
 
@@ -266,20 +266,21 @@ class Slider {
   touchStart = (e: TouchEvent) => {
     if (!(e.target as HTMLDivElement).closest(".gri-slider__img")) return;
     this.isGrabbing = true;
-    console.log("touchStart");
   };
 
   touchMove = (e: TouchEvent) => {
     if (!(e.target as HTMLDivElement).closest(".gri-slider__img")) return;
     if (!this.isGrabbing) return;
-    console.log("touchMove");
     if (!(e.target instanceof HTMLElement)) return;
-    if (!this.startCursorPos) this.startCursorPos = e.x;
+    // вытаскиваем буфер всех точек касания в период touchEvent:
+    if (!this.startCursorPos) this.startCursorPos = e.targetTouches[0].clientX;
   };
 
   touchEnd = (e: TouchEvent) => {
     if (!(e.target as HTMLDivElement).closest(".gri-slider__img")) return;
-    this.endCursorPos = e.x;
+    if (!this.startCursorPos) return;
+    // вытаскиваем буфер удаленных точек касания после окончания touchEvent:
+    this.endCursorPos = e.changedTouches[0].clientX;
     const diff =
       (this.endCursorPos as number) - (this.startCursorPos as number);
 
@@ -287,7 +288,7 @@ class Slider {
       this.count++;
     }
 
-    if (diff < 0 && diff < -80) {
+    if (diff < 0 && diff < -70) {
       this.count--;
     }
 
@@ -326,6 +327,7 @@ class Slider {
     }
     iterator(
       Object.keys(csssd),
+     // @ts-ignore
       (key) => (this.$slider.style[key] = csssd[key as keyof typeof csssd]),
       "forEach"
     );
