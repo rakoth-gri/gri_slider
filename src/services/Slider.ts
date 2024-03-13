@@ -249,11 +249,11 @@ class Slider {
       (this.endCursorPos as number) - (this.startCursorPos as number);
 
     if (diff > 0 && diff > 70) {
-      this.count++;
+      this.count--;
     }
 
     if (diff < 0 && diff < -70) {
-      this.count--;
+      this.count++;
     }
 
     this.prepareForMoveTrack();
@@ -285,11 +285,11 @@ class Slider {
       (this.endCursorPos as number) - (this.startCursorPos as number);
 
     if (diff > 0 && diff > 70) {
-      this.count++;
+      this.count--;
     }
 
     if (diff < 0 && diff < -70) {
-      this.count--;
+      this.count++;
     }
 
     this.prepareForMoveTrack();

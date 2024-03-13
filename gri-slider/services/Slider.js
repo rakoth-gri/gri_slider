@@ -47,10 +47,10 @@ var Slider = (function () {
             _this.endCursorPos = e.x;
             var diff = _this.endCursorPos - _this.startCursorPos;
             if (diff > 0 && diff > 70) {
-                _this.count++;
+                _this.count--;
             }
             if (diff < 0 && diff < -70) {
-                _this.count--;
+                _this.count++;
             }
             _this.prepareForMoveTrack();
             _this.isGrabbing = false;
@@ -79,10 +79,10 @@ var Slider = (function () {
             _this.endCursorPos = e.changedTouches[0].clientX;
             var diff = _this.endCursorPos - _this.startCursorPos;
             if (diff > 0 && diff > 70) {
-                _this.count++;
+                _this.count--;
             }
             if (diff < 0 && diff < -70) {
-                _this.count--;
+                _this.count++;
             }
             _this.prepareForMoveTrack();
             _this.isGrabbing = false;
