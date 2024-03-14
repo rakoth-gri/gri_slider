@@ -32,7 +32,7 @@ new AutoSlider({
   imgInSlideCount: 1,
   delay: 2000,
   arrows: {
-    prev: `<span class="material-symbols-outlined"> arrow_left_alt </span>`,
-    next: `<span class="material-symbols-outlined"> arrow_right_alt </span>`,
+    prev: `<span class="icon-undo"></span>`,
+    next: `<span class="icon-redo"></span>`,
   },
 });

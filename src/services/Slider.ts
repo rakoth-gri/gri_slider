@@ -5,7 +5,7 @@ import {
   T_SLIDELIST_ITEM,
   T_PANEL,
   T_SLIDER_PARAMS,
-  T_ARROWS
+  T_ARROWS,
 } from "../types/types.js";
 
 const EVENT_SELECTORS: T_SELECTORS[] = [
@@ -115,10 +115,13 @@ class Slider {
 
   // RENDERING --------------------------------
 
-  
-  render(slider: HTMLDivElement, list: T_SLIDELIST_ITEM[][], arrows: T_ARROWS) {
+  render(
+    slider: HTMLDivElement,
+    list: T_SLIDELIST_ITEM[][],
+    arrows: T_ARROWS | undefined
+  ) {
     slider.innerHTML = `
-    ${ arrows ? `<div class="gri-slider__prev"></div>` : ""}
+    ${arrows ? `<div class="gri-slider__prev"></div>` : ""}
     <div class="gri-slider__body">
         <div class="gri-slider__track">
             ${iterator(
@@ -140,7 +143,7 @@ class Slider {
             )}              
         </div>    
     </div>    
-    ${ arrows ? `<div class="gri-slider__next"></div>` : ""}             
+    ${arrows ? `<div class="gri-slider__next"></div>` : ""}             
     `;
 
     this.$sliderBody = document.querySelector(`.gri-slider__body`);
@@ -209,8 +212,7 @@ class Slider {
     ) as HTMLDivElement[];
   }
 
-  renderArrows(arrows: T_ARROWS) {  
-    
+  renderArrows(arrows: T_ARROWS) {
     iterator(
       Object.keys(arrows),
       (key: keyof T_ARROWS) =>
@@ -225,84 +227,7 @@ class Slider {
     );
   }
 
-  // SWIPE EVENTS FOR DESKTOP -------------
-
-  disableContextMenu() {
-    this.$slider.addEventListener("contextmenu", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-    });
-  }
-
-  mouseDown = (e: MouseEvent) => {
-    if (!(e.target as HTMLDivElement).closest(".gri-slider__img")) return;
-    this.isGrabbing = true;
-  };
-
-  mouseMove = (e: MouseEvent) => {
-    if (!(e.target as HTMLDivElement).closest(".gri-slider__img")) return;
-    if (!this.isGrabbing) return;
-    if (!(e.target instanceof HTMLElement)) return;
-    if (!this.startCursorPos) this.startCursorPos = e.x;
-  };
-
-  mouseUp = (e: MouseEvent) => {
-    if (!(e.target as HTMLDivElement).closest(".gri-slider__img")) return;
-    if (!this.startCursorPos) return;
-    this.endCursorPos = e.x;
-    const diff =
-      (this.endCursorPos as number) - (this.startCursorPos as number);
-
-    if (diff > 0 && diff > 70) {
-      this.count--;
-    }
-
-    if (diff < 0 && diff < -70) {
-      this.count++;
-    }
-
-    this.prepareForMoveTrack();
-    this.isGrabbing = false;
-    this.startCursorPos = null;
-  };
-
-  // SWIPE EVENTS FOR MOBILE -------------
-
-  touchStart = (e: TouchEvent) => {
-    if (!(e.target as HTMLDivElement).closest(".gri-slider__img")) return;
-    this.isGrabbing = true;
-  };
-
-  touchMove = (e: TouchEvent) => {
-    if (!(e.target as HTMLDivElement).closest(".gri-slider__img")) return;
-    if (!this.isGrabbing) return;
-    if (!(e.target instanceof HTMLElement)) return;
-    // вытаскиваем буфер всех точек касания в период touchEvent:
-    if (!this.startCursorPos) this.startCursorPos = e.targetTouches[0].clientX;
-  };
-
-  touchEnd = (e: TouchEvent) => {
-    if (!(e.target as HTMLDivElement).closest(".gri-slider__img")) return;
-    if (!this.startCursorPos) return;
-    // вытаскиваем буфер удаленных точек касания после окончания touchEvent:
-    this.endCursorPos = e.changedTouches[0].clientX;
-    const diff =
-      (this.endCursorPos as number) - (this.startCursorPos as number);
-
-    if (diff > 0 && diff > 70) {
-      this.count--;
-    }
-
-    if (diff < 0 && diff < -70) {
-      this.count++;
-    }
-
-    this.prepareForMoveTrack();
-    this.isGrabbing = false;
-    this.startCursorPos = null;
-  };
-
-  // STYLING --------------------------------
+  // STYLING CSS --------------------------------
 
   trackStyles = (
     track: HTMLDivElement,
@@ -376,6 +301,85 @@ class Slider {
   }
 
   // EVENTS --------------------------------------------
+
+  // MOUSE EVENT HANDLERS FOR DESKTOP -------------
+
+  disableContextMenu() {
+    this.$slider.addEventListener("contextmenu", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+    });
+  }
+
+  mouseDown = (e: MouseEvent) => {
+    if (!(e.target as HTMLDivElement).closest(".gri-slider__img")) return;
+    this.isGrabbing = true;
+  };
+
+  mouseMove = (e: MouseEvent) => {
+    if (!(e.target as HTMLDivElement).closest(".gri-slider__img")) return;
+    if (!this.isGrabbing) return;
+    if (!(e.target instanceof HTMLElement)) return;
+    if (!this.startCursorPos) this.startCursorPos = e.x;
+  };
+
+  mouseUp = (e: MouseEvent) => {
+    if (!(e.target as HTMLDivElement).closest(".gri-slider__img")) return;
+    if (!this.startCursorPos) return;
+    this.endCursorPos = e.x;
+    const diff =
+      (this.endCursorPos as number) - (this.startCursorPos as number);
+
+    if (diff > 0 && diff > 70) {
+      this.count--;
+    }
+
+    if (diff < 0 && diff < -70) {
+      this.count++;
+    }
+
+    this.prepareForMoveTrack();
+    this.isGrabbing = false;
+    this.startCursorPos = null;
+  };
+
+  // TOUCH EVENT HANDLERS FOR MOBILE -------------
+
+  touchStart = (e: TouchEvent) => {
+    if (!(e.target as HTMLDivElement).closest(".gri-slider__img")) return;
+    this.isGrabbing = true;
+  };
+
+  touchMove = (e: TouchEvent) => {
+    if (!(e.target as HTMLDivElement).closest(".gri-slider__img")) return;
+    if (!this.isGrabbing) return;
+    if (!(e.target instanceof HTMLElement)) return;
+    // вытаскиваем буфер всех точек касания в период touchEvent:
+    if (!this.startCursorPos) this.startCursorPos = e.targetTouches[0].clientX;
+  };
+
+  touchEnd = (e: TouchEvent) => {
+    if (!(e.target as HTMLDivElement).closest(".gri-slider__img")) return;
+    if (!this.startCursorPos) return;
+    // вытаскиваем буфер удаленных точек касания после окончания touchEvent:
+    this.endCursorPos = e.changedTouches[0].clientX;
+    const diff =
+      (this.endCursorPos as number) - (this.startCursorPos as number);
+
+    if (diff > 0 && diff > 70) {
+      this.count--;
+    }
+
+    if (diff < 0 && diff < -70) {
+      this.count++;
+    }
+
+    this.prepareForMoveTrack();
+    this.isGrabbing = false;
+    this.startCursorPos = null;
+  };
+
+  // CLICK EVENT HANDLER -------------
 
   addClickEventToSliderHandler = (e: Event) => {
     if (!(e.target instanceof HTMLElement)) return;

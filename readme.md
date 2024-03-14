@@ -3,7 +3,7 @@
 #### The following technologies were used in the development
 
 1. scss / css - to create base styles;
-2. vanilla js - to create logic and render the carousel
+2. vanilla JS - to create logic and render the carousel
 3. TS - for type checking;
 
 #### 0. All source-code stored in the **"gri-slider"** folder
@@ -291,7 +291,7 @@ new AutoSlider({
 });
 ```
 
-Pre-prepared **index.min.css** already contains css for iconMoon font. Pass each pair to 'arrows' property of your slider instance (see examples above):
+file **index.min.css** already contains css for iconMoon font. Pass each pair to 'arrows' property of your slider instance (see examples above):
 
 ```html
 <!-- 1 -->
