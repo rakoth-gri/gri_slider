@@ -4,7 +4,7 @@ const SLIDE_LIST = [
   {
     slideImg: "./picts/guitars/at_ibanez.jpg",
     comment: "Andy Timmons `CRYING` Ibanez",
-    // controlImg: "./src/icons/guitar.svg",
+    controlImg: "./src/icons/guitar.svg",
   },
   {
     slideImg: "./picts/guitars/ej_strat.jpg",
@@ -32,7 +32,7 @@ new AutoSlider({
     fontWeight: 500,
   },
   // isAutoSlider: true,
-  panel: ["renderDots"],
+  panel: ["renderControls"],
   imgInSlideCount: 1,
   delay: 2e3,
   arrows: [
