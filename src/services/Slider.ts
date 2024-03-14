@@ -302,7 +302,7 @@ class Slider {
 
   // EVENTS --------------------------------------------
 
-  // MOUSE EVENT HANDLERS FOR DESKTOP -------------
+  // SWIPE  EVENT HANDLERS FOR DESKTOP AND MOBILE COMBINED -------------
 
   disableContextMenu() {
     this.$slider.addEventListener("contextmenu", (e) => {
@@ -311,58 +311,29 @@ class Slider {
     });
   }
 
-  mouseDown = (e: MouseEvent) => {
+  start = (e: Event) => {
     if (!(e.target as HTMLDivElement).closest(".gri-slider__img")) return;
     this.isGrabbing = true;
   };
 
-  mouseMove = (e: MouseEvent) => {
+  move = (e: Event) => {
     if (!(e.target as HTMLDivElement).closest(".gri-slider__img")) return;
     if (!this.isGrabbing) return;
     if (!(e.target instanceof HTMLElement)) return;
-    if (!this.startCursorPos) this.startCursorPos = e.x;
+    if (!this.startCursorPos) {
+      e.type.includes("touch")
+        ? (this.startCursorPos = (e as TouchEvent).targetTouches[0].clientX)
+        : (this.startCursorPos = (e as MouseEvent).x);
+    }   
   };
 
-  mouseUp = (e: MouseEvent) => {
+  end = (e: Event) => {
     if (!(e.target as HTMLDivElement).closest(".gri-slider__img")) return;
     if (!this.startCursorPos) return;
-    this.endCursorPos = e.x;
-    const diff =
-      (this.endCursorPos as number) - (this.startCursorPos as number);
+    e.type.includes("touch")
+      ? (this.endCursorPos = (e as TouchEvent).changedTouches[0].clientX)
+      : (this.endCursorPos = (e as MouseEvent).x);
 
-    if (diff > 0 && diff > 70) {
-      this.count--;
-    }
-
-    if (diff < 0 && diff < -70) {
-      this.count++;
-    }
-
-    this.prepareForMoveTrack();
-    this.isGrabbing = false;
-    this.startCursorPos = null;
-  };
-
-  // TOUCH EVENT HANDLERS FOR MOBILE -------------
-
-  touchStart = (e: TouchEvent) => {
-    if (!(e.target as HTMLDivElement).closest(".gri-slider__img")) return;
-    this.isGrabbing = true;
-  };
-
-  touchMove = (e: TouchEvent) => {
-    if (!(e.target as HTMLDivElement).closest(".gri-slider__img")) return;
-    if (!this.isGrabbing) return;
-    if (!(e.target instanceof HTMLElement)) return;
-    // вытаскиваем буфер всех точек касания в период touchEvent:
-    if (!this.startCursorPos) this.startCursorPos = e.targetTouches[0].clientX;
-  };
-
-  touchEnd = (e: TouchEvent) => {
-    if (!(e.target as HTMLDivElement).closest(".gri-slider__img")) return;
-    if (!this.startCursorPos) return;
-    // вытаскиваем буфер удаленных точек касания после окончания touchEvent:
-    this.endCursorPos = e.changedTouches[0].clientX;
     const diff =
       (this.endCursorPos as number) - (this.startCursorPos as number);
 
@@ -406,31 +377,19 @@ class Slider {
   }
 
   addSwipeEventForDesktop() {
-    (this.$track as HTMLDivElement).addEventListener(
-      "mousedown",
-      this.mouseDown
-    );
+    (this.$track as HTMLDivElement).addEventListener("mousedown", this.start);
 
-    (this.$track as HTMLDivElement).addEventListener(
-      "mousemove",
-      this.mouseMove
-    );
+    (this.$track as HTMLDivElement).addEventListener("mousemove", this.move);
 
-    (this.$track as HTMLDivElement).addEventListener("mouseup", this.mouseUp);
+    (this.$track as HTMLDivElement).addEventListener("mouseup", this.end);
   }
 
   addSwipeEventForMobile() {
-    (this.$track as HTMLDivElement).addEventListener(
-      "touchstart",
-      this.touchStart
-    );
+    (this.$track as HTMLDivElement).addEventListener("touchstart", this.start);
 
-    (this.$track as HTMLDivElement).addEventListener(
-      "touchmove",
-      this.touchMove
-    );
+    (this.$track as HTMLDivElement).addEventListener("touchmove", this.move);
 
-    (this.$track as HTMLDivElement).addEventListener("touchend", this.touchEnd);
+    (this.$track as HTMLDivElement).addEventListener("touchend", this.end);
   }
 }
 

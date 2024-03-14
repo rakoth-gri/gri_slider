@@ -24,76 +24,49 @@ var Slider = (function () {
     function Slider(_a) {
         var _this = this;
         var list = _a.list, _b = _a.csssd, csssd = _b === void 0 ? {} : _b, _c = _a.panel, panel = _c === void 0 ? undefined : _c, _d = _a.imgInSlideCount, imgInSlideCount = _d === void 0 ? 1 : _d, arrows = _a.arrows;
-        this.mouseDown = function (e) {
-            if (!e.target.closest(".gri-slider__img"))
-                return;
-            _this.isGrabbing = true;
-        };
-        this.mouseMove = function (e) {
-            if (!e.target.closest(".gri-slider__img"))
-                return;
-            if (!_this.isGrabbing)
-                return;
-            if (!(e.target instanceof HTMLElement))
-                return;
-            if (!_this.startCursorPos)
-                _this.startCursorPos = e.x;
-        };
-        this.mouseUp = function (e) {
-            if (!e.target.closest(".gri-slider__img"))
-                return;
-            if (!_this.startCursorPos)
-                return;
-            _this.endCursorPos = e.x;
-            var diff = _this.endCursorPos - _this.startCursorPos;
-            if (diff > 0 && diff > 70) {
-                _this.count--;
-            }
-            if (diff < 0 && diff < -70) {
-                _this.count++;
-            }
-            _this.prepareForMoveTrack();
-            _this.isGrabbing = false;
-            _this.startCursorPos = null;
-        };
-        this.touchStart = function (e) {
-            if (!e.target.closest(".gri-slider__img"))
-                return;
-            _this.isGrabbing = true;
-        };
-        this.touchMove = function (e) {
-            if (!e.target.closest(".gri-slider__img"))
-                return;
-            if (!_this.isGrabbing)
-                return;
-            if (!(e.target instanceof HTMLElement))
-                return;
-            if (!_this.startCursorPos)
-                _this.startCursorPos = e.targetTouches[0].clientX;
-        };
-        this.touchEnd = function (e) {
-            if (!e.target.closest(".gri-slider__img"))
-                return;
-            if (!_this.startCursorPos)
-                return;
-            _this.endCursorPos = e.changedTouches[0].clientX;
-            var diff = _this.endCursorPos - _this.startCursorPos;
-            if (diff > 0 && diff > 70) {
-                _this.count--;
-            }
-            if (diff < 0 && diff < -70) {
-                _this.count++;
-            }
-            _this.prepareForMoveTrack();
-            _this.isGrabbing = false;
-            _this.startCursorPos = null;
-        };
         this.trackStyles = function (track, images, list, imgInSlideCount) {
             _this.width = _this.$sliderBody.offsetWidth;
             images.forEach(function (img) {
                 return (img.style.width = "".concat(_this.width / imgInSlideCount - 8, "px"));
             });
             track.style.width = "".concat(_this.width * list.length, "px");
+        };
+        this.start = function (e) {
+            if (!e.target.closest(".gri-slider__img"))
+                return;
+            _this.isGrabbing = true;
+        };
+        this.move = function (e) {
+            if (!e.target.closest(".gri-slider__img"))
+                return;
+            if (!_this.isGrabbing)
+                return;
+            if (!(e.target instanceof HTMLElement))
+                return;
+            if (!_this.startCursorPos) {
+                e.type.includes("touch")
+                    ? (_this.startCursorPos = e.targetTouches[0].clientX)
+                    : (_this.startCursorPos = e.x);
+            }
+        };
+        this.end = function (e) {
+            if (!e.target.closest(".gri-slider__img"))
+                return;
+            if (!_this.startCursorPos)
+                return;
+            e.type.includes("touch")
+                ? (_this.endCursorPos = e.changedTouches[0].clientX)
+                : (_this.endCursorPos = e.x);
+            var diff = _this.endCursorPos - _this.startCursorPos;
+            if (diff > 0 && diff > 70) {
+                _this.count--;
+            }
+            if (diff < 0 && diff < -70) {
+                _this.count++;
+            }
+            _this.prepareForMoveTrack();
+            _this.isGrabbing = false;
+            _this.startCursorPos = null;
         };
         this.addClickEventToSliderHandler = function (e) {
             if (!(e.target instanceof HTMLElement))
@@ -181,12 +154,6 @@ var Slider = (function () {
                 : (document.querySelector(EVENT_SELECTORS[1]).innerHTML = arrows[key]);
         }, "forEach");
     };
-    Slider.prototype.disableContextMenu = function () {
-        this.$slider.addEventListener("contextmenu", function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-        });
-    };
     Slider.prototype.checkOptionsStyles = function (csssd) {
         var _this = this;
         if (!Object.values(csssd).length) {
@@ -218,18 +185,24 @@ var Slider = (function () {
             ind === i && elem.classList.add("active");
         }, "forEach");
     };
+    Slider.prototype.disableContextMenu = function () {
+        this.$slider.addEventListener("contextmenu", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+    };
     Slider.prototype.addClickEventToSlider = function () {
         this.$slider.addEventListener("click", this.addClickEventToSliderHandler);
     };
     Slider.prototype.addSwipeEventForDesktop = function () {
-        this.$track.addEventListener("mousedown", this.mouseDown);
-        this.$track.addEventListener("mousemove", this.mouseMove);
-        this.$track.addEventListener("mouseup", this.mouseUp);
+        this.$track.addEventListener("mousedown", this.start);
+        this.$track.addEventListener("mousemove", this.move);
+        this.$track.addEventListener("mouseup", this.end);
     };
     Slider.prototype.addSwipeEventForMobile = function () {
-        this.$track.addEventListener("touchstart", this.touchStart);
-        this.$track.addEventListener("touchmove", this.touchMove);
-        this.$track.addEventListener("touchend", this.touchEnd);
+        this.$track.addEventListener("touchstart", this.start);
+        this.$track.addEventListener("touchmove", this.move);
+        this.$track.addEventListener("touchend", this.end);
     };
     return Slider;
 }());
