@@ -23,7 +23,7 @@ var EVENT_SELECTORS = [
 var Slider = (function () {
     function Slider(_a) {
         var _this = this;
-        var list = _a.list, _b = _a.csssd, csssd = _b === void 0 ? {} : _b, _c = _a.panel, panel = _c === void 0 ? undefined : _c, _d = _a.imgInSlideCount, imgInSlideCount = _d === void 0 ? 1 : _d, _e = _a.arrows, arrows = _e === void 0 ? [] : _e;
+        var list = _a.list, _b = _a.csssd, csssd = _b === void 0 ? {} : _b, _c = _a.panel, panel = _c === void 0 ? undefined : _c, _d = _a.imgInSlideCount, imgInSlideCount = _d === void 0 ? 1 : _d, arrows = _a.arrows;
         this.mouseDown = function (e) {
             if (!e.target.closest(".gri-slider__img"))
                 return;
@@ -100,11 +100,11 @@ var Slider = (function () {
                 return;
             if (!EVENT_SELECTORS.some(function (sel) { return e.target.closest(sel); }))
                 return;
-            switch (e.target.id) {
-                case "prev":
+            switch (true) {
+                case !!e.target.closest(EVENT_SELECTORS[0]):
                     _this.count--;
                     break;
-                case "next":
+                case !!e.target.closest(EVENT_SELECTORS[1]):
                     _this.count++;
                     break;
                 default:
@@ -113,7 +113,7 @@ var Slider = (function () {
             }
             _this.prepareForMoveTrack();
         };
-        this.$sliderBody = document.querySelector(".gri-slider__body");
+        this.$sliderBody = null;
         this.$slider = document.querySelector(".gri-slider");
         this.$track = null;
         this.$imageBlocks = null;
@@ -131,11 +131,11 @@ var Slider = (function () {
         this.endCursorPos = null;
         if (!list.length)
             throw new Error("You should pass non-empty Array as a value of the `list` param!");
-        this.builder(this.$sliderBody, this.list, this.$slider, this.csssd, this.panel, this.imgInSlideCount, this.arrows);
+        this.builder(this.list, this.$slider, this.csssd, this.panel, this.imgInSlideCount, this.arrows);
     }
-    Slider.prototype.builder = function (sliderBody, list, slider, csssd, panel, imgInSlideCount, arrows) {
-        arrows.length && this.renderArrows(arrows);
-        this.render(sliderBody, list);
+    Slider.prototype.builder = function (list, slider, csssd, panel, imgInSlideCount, arrows) {
+        this.render(slider, list, arrows);
+        arrows && this.renderArrows(arrows);
         panel && this[panel[0]](slider, list);
         this.trackStyles(this.$track, this.$imageBlocks, list, imgInSlideCount);
         this.checkOptionsStyles(csssd);
@@ -145,13 +145,14 @@ var Slider = (function () {
         this.addSwipeEventForMobile();
         this.disableContextMenu();
     };
-    Slider.prototype.render = function (sliderBody, list) {
-        sliderBody.innerHTML = "<div class=\"gri-slider__track\">\n        ".concat(iterator(list, function (slidesArr) { return "\n            ".concat(slidesArr
+    Slider.prototype.render = function (slider, list, arrows) {
+        slider.innerHTML = "\n    ".concat(arrows ? "<div class=\"gri-slider__prev\"></div>" : "", "\n    <div class=\"gri-slider__body\">\n        <div class=\"gri-slider__track\">\n            ").concat(iterator(list, function (slidesArr) { return "\n                ".concat(slidesArr
             .map(function (_a) {
             var slideImg = _a.slideImg, comment = _a.comment;
-            return "\n                <article class=\"gri-slider__img\">\n                  <img src=\"".concat(slideImg, "\" />\n                  <span class=\"gri-slider__img_index\"> ").concat(comment || "", "</span>\n                </article>");
+            return "\n                    <article class=\"gri-slider__img\">\n                      <img src=\"".concat(slideImg, "\" />\n                      <span class=\"gri-slider__img_index\"> ").concat(comment || "", "</span>\n                    </article>");
         })
-            .join(""), "\n            "); }, "map"), "            \n    </div>        \n    ");
+            .join(""), "              \n                "); }, "map"), "              \n        </div>    \n    </div>    \n    ").concat(arrows ? "<div class=\"gri-slider__next\"></div>" : "", "             \n    ");
+        this.$sliderBody = document.querySelector(".gri-slider__body");
         this.$track = document.querySelector(".gri-slider__track");
         this.$imageBlocks = document.querySelectorAll(".gri-slider__img");
         this.$imageBlocks.forEach(function (imageBlock) {
@@ -174,14 +175,10 @@ var Slider = (function () {
         this.$dots = Array.from(document.querySelectorAll(".gri-slider__panel_dot"));
     };
     Slider.prototype.renderArrows = function (arrows) {
-        var prev = "gri-slider__prev";
-        var next = "gri-slider__next";
-        iterator(arrows, function (arrow) {
-            return arrow.includes(prev)
-                ? (document.querySelector(".".concat(prev)).innerHTML =
-                    arrow)
-                : (document.querySelector(".".concat(next)).innerHTML =
-                    arrow);
+        iterator(Object.keys(arrows), function (key) {
+            return key === "prev"
+                ? (document.querySelector(EVENT_SELECTORS[0]).innerHTML = arrows[key])
+                : (document.querySelector(EVENT_SELECTORS[1]).innerHTML = arrows[key]);
         }, "forEach");
     };
     Slider.prototype.disableContextMenu = function () {
@@ -252,7 +249,7 @@ var AutoSlider = (function (_super) {
         _this.isAutoSlider = isAutoSlider;
         _this.intervalId = undefined;
         _this.delay = delay;
-        _this.addMouseEventToSlider();
+        arrows && _this.addMouseEventToSlider();
         _this.isAutoSlider && _this.autoSlider(_this.delay);
         return _this;
     }

@@ -12,6 +12,8 @@
 - index.js --> js-file which re-exports main Slider class and other required utils;
 - fonts --> some local fonts, already integrated in default css-file
 - types --> empty folder, generated after ts-compilation
+- services --> contains functional classes
+- utils --> contains helpers used in functional classes"s methods
 
 ### SEE PREVIEW [RIGHT NOW!!](https://rakoth-gri.github.io/gri_slider/ "GRI_SLIDER IN ACTION")!
 
@@ -21,22 +23,7 @@
 
 ```html
 <section class="gri-slider">
-  <!-- click for previous slide -->
-  <div class="gri-slider__prev">
-    <span class="material-symbols-outlined gri-slider__prev_el" id="prev">
-      arrow_left_alt
-    </span>
-  </div>
-  <!-- container with carousel inside -->
-  <div class="gri-slider__body">
-    <!-- RENDER -->
-  </div>
-  <!-- click for the next slide -->
-  <div class="gri-slider__next">
-    <span class="material-symbols-outlined gri-slider__next_el" id="next">
-      arrow_right_alt
-    </span>
-  </div>
+  <!-- RENDER -->
 </section>
 ```
 
@@ -44,7 +31,6 @@
 
 ```html
 <head>
-  <!-- other meta content -->
   <!-- specify root to gri-slider folder in your project -->
   <link rel="stylesheet" href="./gri-slider/index.min.css" />
 </head>
@@ -151,6 +137,7 @@ Picture, that illustrates the csssd object styles above:
 ![csssd](picts/options.png "csssd")
 
 Types of values for a single prop in csssd object:
+
 - **[CSSStyleProp]** --> string | number | undefined
 
 Attention:
@@ -252,87 +239,61 @@ new AutoSlider({
 - the customized part of the slider:
   ![arrows](picts/arrows.png "arrows")
 
+```javascript
+new AutoSlider({
+  list: MY_SLIDE_LIST, // required
+  // connect your favourite svg or icon-font resourses to SLider
+  arrows: {
+    prev: `<span class="material-symbols-outlined"> arrow_left_alt </span>`,
+    next: `<span class="material-symbols-outlined"> arrow_right_alt </span>`,
+  }, // optional
+});
+```
+
+**By default: undefined**
+
+- EXAMPLE WITH [GOOGLE icons](https://fonts.google.com/icons/ "GOOGLE ICONS"):
 
 ```javascript
 new AutoSlider({
   list: MY_SLIDE_LIST, // required
-  // connect your favourite icon font resourse, put html-code of chosen icons and don't FORGET
-  // to complete code with functional classes and ides of gri-slider (read chapter below) 
-  arrows: [
-    `<span class="icon-circle-right gri-slider__next_el" id="next"></span>`,
-    `<span class="icon-circle-left gri-slider__prev_el" id="prev"></span>`,
-  ], // optional
+  // Pass HTML-code of your favourite svg, icon-font resourses in SLider prop object:
+  arrows: {
+    prev: `<span class="material-symbols-outlined"> arrow_left_alt </span>`,
+    next: `<span class="material-symbols-outlined"> arrow_right_alt </span>`,
+  }, // optional
 });
-```
-
-```html
-  <section class="gri-slider">
-      <div class="gri-slider__prev">
-        <!-- ARROW IS RENDERED HERE -->
-      </div>
-      <div class="gri-slider__body"></div>
-      <div class="gri-slider__next">
-        <!-- ARROW IS RENDERED HERE -->
-      </div>
-  </section
-```
-
-**By default: []**
-
-#### 3. A few words about customizing html markup of gri-slider:
-
-Below, you see a recommended structure with pre-prepared html classes and ides. Almost all element's selectors are
-cooperated with source-code files. Please, Do not change them!
-<br>
-
-You can customize elements **.gri-slider\_\_prev_el**, **.gri-slider\_\_next-el** by adding your own icons or svgs:
-
-- EXAMPLE WITH [GOOGLE icons](https://fonts.google.com/icons/ "GOOGLE ICONS"):
-
-```html
-<!-- NOTE! All selectors that provide working functionality have remained unchanged -->
-
-<section class="gri-slider">
-  <!-- click for previous slide -->
-  <div class="gri-slider__prev">
-    <span class="material-symbols-outlined gri-slider__prev_el" id="prev">
-      arrow_left_alt
-    </span>
-  </div>
-  <!-- container with carousel inside -->
-  <div class="gri-slider__body">
-    <!-- RENDER -->
-  </div>
-  <!-- click for the next slide -->
-  <div class="gri-slider__next">
-    <span class="material-symbols-outlined gri-slider__next_el" id="next">
-      arrow_right_alt
-    </span>
-  </div>
-</section>
 ```
 
 - EXAMPLE WITH [IcoMoon icons](https://icomoon.io/app/#/select/library "IcoMoon icons"):
 
-```html
-<!-- NOTE! All selectors that provide working functionality have remained unchanged -->
-<section class="gri-slider">
-  <div class="gri-slider__prev">
-    <span class="icon-undo gri-slider__prev_el" id="prev"></span>
-  </div>
-  <div class="gri-slider__body">
-    <!-- RENDER -->
-  </div>
-  <div class="gri-slider__next">
-    <span class="icon-redo gri-slider__next_el" id="next"></span>
-  </div>
-</section>
+```javascript
+new AutoSlider({
+  list: MY_SLIDE_LIST, // required
+  // Pass HTML-code of your favourite svg, icon-font resourses in SLider prop object:
+  arrows: {
+    prev: `<span class="icon-circle-left"></span>`,
+    next: `<span class="icon-circle-right"></span>`,
+  }, // optional
+});
 ```
 
-NOTICE moment, that pre-prepared **index.min.css** already contain some iconMoon arrow icons. Just add code below in your markUp:
+- EXAMPLE WITH IMG TAG:
+
+```javascript
+new AutoSlider({
+  list: MY_SLIDE_LIST, // required
+  // Pass HTML-code of your favourite svg, icon-font resourses in SLider prop object:
+  arrows: {
+    prev: `<img src="./myImages/prev.png"/>`,
+    next: `<img src="./myImages/next.png"/>`,
+  }, // optional
+});
+```
+
+Pre-prepared **index.min.css** already contains css for iconMoon font. Pass each pair to 'arrows' property of your slider instance (see examples above):
 
 ```html
-<!-- PRE-PARED ICOMOON PAIRS, DON'T FORGET TO PUT FUNCTIONAL CLASSES AND ID INSIDE THEM (see examples above): -->
 <!-- 1 -->
 <span class="icon-arrow-right"></span>
 <span class="icon-arrow-left"></span>
@@ -346,7 +307,7 @@ NOTICE moment, that pre-prepared **index.min.css** already contain some iconMoon
 
 #### 4. Customizing styles of gri-slider:
 
-You can always customize styles by modifying the styles attached in **index.min.css** file
+You can always customize styles by modifying the styles attached in pre-pared **index.min.css** file
 
 #### 5. Media-querries grid:
 

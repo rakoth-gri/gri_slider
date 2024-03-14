@@ -13,6 +13,8 @@ export type T_ARRAY_METHODS = "forEach" | "map" | "filter" | "reduce"
 
 export type T_PANEL = 'renderDots' | 'renderControls'
 
+export type T_ARROWS = Record<string, string>
+
 export type T_SLIDER_PARAMS = {
   list: T_SLIDELIST_ITEM[];
   csssd?: Partial<CSSStyleDeclaration>,
@@ -20,5 +22,5 @@ export type T_SLIDER_PARAMS = {
   panel?: T_PANEL[],
   imgInSlideCount?: number,
   delay?: number,
-  arrows?: string[]
+  arrows?: T_ARROWS
 }

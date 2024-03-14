@@ -5,6 +5,7 @@ import {
   T_SLIDELIST_ITEM,
   T_PANEL,
   T_SLIDER_PARAMS,
+  T_ARROWS
 } from "../types/types.js";
 
 const EVENT_SELECTORS: T_SELECTORS[] = [
@@ -17,7 +18,7 @@ const EVENT_SELECTORS: T_SELECTORS[] = [
 class Slider {
   list: T_SLIDELIST_ITEM[][];
   csssd: Partial<CSSStyleDeclaration>;
-  $sliderBody: HTMLDivElement;
+  $sliderBody: HTMLDivElement | null;
   $slider: HTMLDivElement;
   $track: HTMLDivElement | null;
   $imageBlocks: NodeListOf<HTMLDivElement> | null;
@@ -27,7 +28,7 @@ class Slider {
   width: null | number;
   panel: T_PANEL[] | undefined;
   imgInSlideCount: number;
-  arrows: string[];
+  arrows: T_ARROWS | undefined;
   // TOUCH
   isGrabbing: boolean;
   startCursorPos: null | number;
@@ -38,12 +39,10 @@ class Slider {
     csssd = {},
     panel = undefined,
     imgInSlideCount = 1,
-    arrows = [],
+    arrows,
   }: T_SLIDER_PARAMS) {
     // DOM-ELEMS
-    this.$sliderBody = document.querySelector(
-      `.gri-slider__body`
-    ) as HTMLDivElement;
+    this.$sliderBody = null;
     this.$slider = document.querySelector(`.gri-slider`) as HTMLDivElement;
     this.$track = null;
     this.$imageBlocks = null;
@@ -69,7 +68,6 @@ class Slider {
       );
     // METHS
     this.builder(
-      this.$sliderBody,
       this.list,
       this.$slider,
       this.csssd,
@@ -80,20 +78,18 @@ class Slider {
   }
 
   builder(
-    sliderBody: HTMLDivElement,
     list: T_SLIDELIST_ITEM[][],
     slider: HTMLDivElement,
     csssd: Partial<CSSStyleDeclaration>,
     panel: T_PANEL[] | undefined,
     imgInSlideCount: number,
-    arrows: string[]
+    arrows: T_ARROWS | undefined
   ) {
     // order to invoke:
     // 0
-    arrows.length && this.renderArrows(arrows);
-
+    this.render(slider, list, arrows);
     // 1
-    this.render(sliderBody, list);
+    arrows && this.renderArrows(arrows);
     // 2
     panel && this[panel[0]](slider, list);
     // 3
@@ -119,26 +115,35 @@ class Slider {
 
   // RENDERING --------------------------------
 
-  render(sliderBody: HTMLDivElement, list: T_SLIDELIST_ITEM[][]) {
-    sliderBody.innerHTML = `<div class="gri-slider__track">
-        ${iterator(
-          list,
-          (slidesArr) => `
-            ${slidesArr
-              .map(
-                ({ slideImg, comment }) => `
-                <article class="gri-slider__img">
-                  <img src="${slideImg}" />
-                  <span class="gri-slider__img_index"> ${comment || ``}</span>
-                </article>`
-              )
-              .join("")}
-            `,
-          "map"
-        )}            
-    </div>        
+  
+  render(slider: HTMLDivElement, list: T_SLIDELIST_ITEM[][], arrows: T_ARROWS) {
+    slider.innerHTML = `
+    ${ arrows ? `<div class="gri-slider__prev"></div>` : ""}
+    <div class="gri-slider__body">
+        <div class="gri-slider__track">
+            ${iterator(
+              list,
+              (slidesArr) => `
+                ${slidesArr
+                  .map(
+                    ({ slideImg, comment }) => `
+                    <article class="gri-slider__img">
+                      <img src="${slideImg}" />
+                      <span class="gri-slider__img_index"> ${
+                        comment || ``
+                      }</span>
+                    </article>`
+                  )
+                  .join("")}              
+                `,
+              "map"
+            )}              
+        </div>    
+    </div>    
+    ${ arrows ? `<div class="gri-slider__next"></div>` : ""}             
     `;
 
+    this.$sliderBody = document.querySelector(`.gri-slider__body`);
     this.$track = document.querySelector(".gri-slider__track");
     this.$imageBlocks = document.querySelectorAll(".gri-slider__img");
     // отменяем поведение по-умолчанию, элементы не захватываются....
@@ -204,18 +209,18 @@ class Slider {
     ) as HTMLDivElement[];
   }
 
-  renderArrows(arrows: string[]) {
-    let prev = "gri-slider__prev";
-    let next = "gri-slider__next";
-
+  renderArrows(arrows: T_ARROWS) {  
+    
     iterator(
-      arrows,
-      (arrow) =>
-        arrow.includes(prev)
-          ? ((document.querySelector(`.${prev}`) as HTMLElement).innerHTML =
-              arrow)
-          : ((document.querySelector(`.${next}`) as HTMLElement).innerHTML =
-              arrow),
+      Object.keys(arrows),
+      (key: keyof T_ARROWS) =>
+        key === "prev"
+          ? ((
+              document.querySelector(EVENT_SELECTORS[0]) as HTMLElement
+            ).innerHTML = arrows[key])
+          : ((
+              document.querySelector(EVENT_SELECTORS[1]) as HTMLElement
+            ).innerHTML = arrows[key]),
       "forEach"
     );
   }
@@ -305,7 +310,7 @@ class Slider {
     list: T_SLIDELIST_ITEM[][],
     imgInSlideCount: number
   ) => {
-    this.width = this.$sliderBody.offsetWidth;
+    this.width = (this.$sliderBody as HTMLDivElement).offsetWidth;
     images.forEach(
       (img) =>
         (img.style.width = `${(this.width as number) / imgInSlideCount - 8}px`)
@@ -327,7 +332,7 @@ class Slider {
     }
     iterator(
       Object.keys(csssd),
-     // @ts-ignore
+      // @ts-ignore
       (key) => (this.$slider.style[key] = csssd[key as keyof typeof csssd]),
       "forEach"
     );
@@ -378,11 +383,11 @@ class Slider {
     if (!EVENT_SELECTORS.some((sel) => (e.target as HTMLElement).closest(sel)))
       return;
 
-    switch (e.target.id) {
-      case "prev":
+    switch (true) {
+      case !!e.target.closest(EVENT_SELECTORS[0]):
         this.count--;
         break;
-      case "next":
+      case !!e.target.closest(EVENT_SELECTORS[1]):
         this.count++;
         break;
       default:
@@ -447,7 +452,7 @@ export default class AutoSlider extends Slider {
     this.intervalId = undefined;
     this.delay = delay;
     // METHS
-    this.addMouseEventToSlider();
+    arrows && this.addMouseEventToSlider();
     this.isAutoSlider && this.autoSlider(this.delay);
   }
 

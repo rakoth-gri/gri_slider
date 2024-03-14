@@ -8,35 +8,35 @@
     width: 45%
     margin: 2rem auto
     @include flex-mixin
-    justify-content: space-evenly
+    justify-content: space-evenly   
     flex-wrap: wrap
     user-select: none
+    position: relative    
+    
+    &__body
+        width: 80%        
+        height: 100%
+        overflow: hidden       
 
-    &__next, &__prev
+    &__next, &__prev        
         width: 30px
         height: 30px
-        @include flex-mixin
-        justify-content: center       
+        @include flex-mixin          
         cursor: pointer
         z-index: 5
         opacity: 0
         transition: 0.25s all ease 
-        user-select: none 
-
-        &.active
-            opacity: 1
+        user-select: none
 
         &:hover
             color: gold
-            transform: scale(1.13)
+            transform: scale(1.1)
 
-        &_el
-            font-size: 2em
+        *
+            font-size: 2em        
 
-    &__body
-        width: 80%
-        height: 100%
-        overflow: hidden       
+        &.active
+            opacity: 1               
 
     &__track
         will-change: transform, opacity        

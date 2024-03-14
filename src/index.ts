@@ -34,8 +34,8 @@ new AutoSlider({
   panel: ["renderControls"],
   imgInSlideCount: 1,
   delay: 2000,
-  arrows: [
-    `<span class="icon-circle-right gri-slider__next_el" id="next"></span>`,
-    `<span class="icon-circle-left gri-slider__prev_el" id="prev"></span>`,
-  ],
+  arrows: {
+    prev: `<span class="material-symbols-outlined"> arrow_left_alt </span>`,
+    next: `<span class="material-symbols-outlined"> arrow_right_alt </span>`,
+  },
 });
