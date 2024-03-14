@@ -23,16 +23,17 @@ const SLIDE_LIST = [
 new AutoSlider({
   list: SLIDE_LIST,
   csssd: {
-    color: "purple",
+    color: "gold",
     letterSpacing: "0.7px",
     fontFamily: "Merienda",
+    fontWeight: 500,
   },
   // isAutoSlider: true,
   panel: ["renderControls"],
   imgInSlideCount: 1,
   delay: 2000,
-  arrows: {
-    prev: `<span class="icon-undo"></span>`,
-    next: `<span class="icon-redo"></span>`,
-  },
+  // arrows: {
+  //   prev: `<span class="icon-undo"></span>`,
+  //   next: `<span class="icon-redo"></span>`,
+  // },
 });
