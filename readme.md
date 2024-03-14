@@ -150,10 +150,7 @@ new AutoSlider({
 Picture, that illustrates the csssd object styles above:
 ![csssd](picts/options.png "csssd")
 
-**By default: font of slider container (.gri-slider) is 'Montserrat'**
-
 Types of values for a single prop in csssd object:
-
 - **[CSSStyleProp]** --> string | number | undefined
 
 Attention:
