@@ -4,7 +4,7 @@ const SLIDE_LIST = [
   {
     slideImg: "./picts/guitars/at_ibanez.jpg",
     comment: "Andy Timmons <b>`CRYING`</b> Ibanez",
-    controlImg: "./src/icons/guitar.svg",
+    // controlImg: "./src/icons/guitar.svg",
   },
   {
     slideImg: "./picts/guitars/ej_strat.jpg",
@@ -20,20 +20,23 @@ const SLIDE_LIST = [
   },
 ];
 
-new AutoSlider({
+const options = {
   list: SLIDE_LIST,
   csssd: {
-    color: "gold",
+    color: "purple",
     letterSpacing: "0.7px",
     fontFamily: "Merienda",
     fontWeight: 500,
   },
   // isAutoSlider: true,
   panel: ["renderControls"],
-  imgInSlideCount: 1,
-  delay: 2000,
-  // arrows: {
-  //   prev: `<span class="icon-undo"></span>`,
-  //   next: `<span class="icon-redo"></span>`,
-  // },
-});
+  // imgInSlideCount: 2,
+  // delay: 4000,
+  arrows: {
+    prev: `<span class="icon-undo"></span>`,
+    next: `<span class="icon-redo"></span>`,
+  },
+}
+
+
+new AutoSlider(options);
