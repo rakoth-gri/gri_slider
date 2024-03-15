@@ -116,13 +116,14 @@ var Slider = (function () {
         this.resize();
         this.addSwipeEventForDesktop();
         this.addSwipeEventForMobile();
+        this.observer();
         this.disableContextMenu();
     };
     Slider.prototype.render = function (slider, list, arrows) {
-        slider.innerHTML = "\n    ".concat(arrows ? "<div class=\"gri-slider__prev\"></div>" : "", "\n    <div class=\"gri-slider__body\">\n        <div class=\"gri-slider__track\">\n            ").concat(iterator(list, function (slidesArr) { return "\n                ".concat(slidesArr
+        slider.innerHTML = "\n    ".concat(arrows ? "<div class=\"gri-slider__prev\"></div>" : "", "\n    <div class=\"gri-slider__body\">\n        <div class=\"gri-slider__track\">\n            ").concat(iterator(list, function (slidesArr, i) { return "\n                ".concat(slidesArr
             .map(function (_a) {
             var slideImg = _a.slideImg, comment = _a.comment;
-            return "\n                    <article class=\"gri-slider__img\">\n                      <img src=\"".concat(slideImg, "\" />\n                      <span class=\"gri-slider__img_index\"> ").concat(comment || "", "</span>\n                    </article>");
+            return "\n                    <article class=\"gri-slider__img\">\n                      <img src=\"".concat(i === 0 ? slideImg : "", "\" data-src='").concat(slideImg, "'/>\n                      <span class=\"gri-slider__img_index\"> ").concat(comment || "", "</span>\n                    </article>");
         })
             .join(""), "              \n                "); }, "map"), "              \n        </div>    \n    </div>    \n    ").concat(arrows ? "<div class=\"gri-slider__next\"></div>" : "", "             \n    ");
         this.$sliderBody = document.querySelector(".gri-slider__body");
@@ -204,6 +205,28 @@ var Slider = (function () {
         this.$track.addEventListener("touchmove", this.move);
         this.$track.addEventListener("touchend", this.end);
     };
+    Slider.prototype.observer = function () {
+        var options = {
+            root: this.$sliderBody,
+            rootMargin: "0px",
+            threshold: 0.5,
+        };
+        var cb = function (entries, observer) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    var img = entry.target.children[0];
+                    var src = img.dataset.src;
+                    img.src = src;
+                    observer.unobserve(entry.target);
+                }
+            });
+        };
+        if (this.$imageBlocks) {
+            this.$imageBlocks.forEach(function (block, i) {
+                return i > 0 && new IntersectionObserver(cb, options).observe(block);
+            });
+        }
+    };
     return Slider;
 }());
 var AutoSlider = (function (_super) {
@@ -230,10 +253,7 @@ var AutoSlider = (function (_super) {
         var _this = this;
         this.intervalId = setInterval(function () {
             _this.count++;
-            _this.count = checkCount(_this.count, _this.list);
-            _this.panel &&
-                _this.selectActiveElem(_this.count, _this.$controls ? "$controls" : "$dots");
-            _this.moveTrack(_this.count);
+            _this.prepareForMoveTrack();
         }, delay);
     };
     AutoSlider.prototype.addMouseEventToSlider = function () {

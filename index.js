@@ -23,7 +23,7 @@ const SLIDE_LIST = [
 const options = {
   list: SLIDE_LIST,
   csssd: {
-    color: "purple",
+    color: "teal",
     letterSpacing: "0.7px",
     fontFamily: "Merienda",
     fontWeight: 500,
@@ -31,12 +31,11 @@ const options = {
   // isAutoSlider: true,
   panel: ["renderControls"],
   // imgInSlideCount: 2,
-  // delay: 4000,
+  // delay: 500,
   arrows: {
     prev: `<span class="icon-undo"></span>`,
     next: `<span class="icon-redo"></span>`,
   },
-}
-
+};
 
 new AutoSlider(options);

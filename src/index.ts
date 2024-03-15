@@ -30,7 +30,7 @@ new AutoSlider({
     letterSpacing: "0.7px",
     fontFamily: "Merienda",
   },
-  // isAutoSlider: true,
+  isAutoSlider: true,
   panel: ["renderControls"],
   imgInSlideCount: 1,
   delay: 2000,

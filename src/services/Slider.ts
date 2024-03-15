@@ -110,6 +110,8 @@ class Slider {
     // 8
     this.addSwipeEventForMobile();
     // 9
+    this.observer();
+    // 10
     this.disableContextMenu();
   }
 
@@ -126,12 +128,12 @@ class Slider {
         <div class="gri-slider__track">
             ${iterator(
               list,
-              (slidesArr) => `
+              (slidesArr, i) => `
                 ${slidesArr
                   .map(
                     ({ slideImg, comment }) => `
                     <article class="gri-slider__img">
-                      <img src="${slideImg}" />
+                      <img src="${i === 0 ? slideImg : ""}" data-src='${slideImg}'/>
                       <span class="gri-slider__img_index"> ${
                         comment || ``
                       }</span>
@@ -324,7 +326,7 @@ class Slider {
       e.type.includes("touch")
         ? (this.startCursorPos = (e as TouchEvent).targetTouches[0].clientX)
         : (this.startCursorPos = (e as MouseEvent).x);
-    }   
+    }
   };
 
   end = (e: Event) => {
@@ -391,6 +393,33 @@ class Slider {
 
     (this.$track as HTMLDivElement).addEventListener("touchend", this.end);
   }
+
+  // OBSERVER EVENT
+  observer() {
+    let options = {
+      root: this.$sliderBody,
+      rootMargin: "0px",
+      threshold: 0.5,
+    };
+
+    let cb: IntersectionObserverCallback = (entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          let img = entry.target.children[0] as HTMLImageElement
+          let src = img.dataset.src as string;                  
+          img.src = src
+          observer.unobserve(entry.target)
+        }        
+      });
+    };
+
+    if (this.$imageBlocks) {
+      this.$imageBlocks.forEach(
+        (block, i) =>
+          i > 0 && new IntersectionObserver(cb, options).observe(block)
+      );
+    }
+  }
 }
 
 // CLASS_INHERITER
@@ -422,13 +451,7 @@ export default class AutoSlider extends Slider {
   autoSlider(delay: number) {
     this.intervalId = setInterval(() => {
       this.count++;
-      this.count = checkCount(this.count, this.list);
-      this.panel &&
-        this.selectActiveElem(
-          this.count,
-          this.$controls ? "$controls" : "$dots"
-        );
-      this.moveTrack(this.count);
+      this.prepareForMoveTrack()
     }, delay);
   }
 
