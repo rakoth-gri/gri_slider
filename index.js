@@ -4,7 +4,7 @@ const SLIDE_LIST = [
   {
     slideImg: "./picts/guitars/at_ibanez.jpg",
     comment: "Andy Timmons <b>`CRYING`</b> Ibanez",
-    // controlImg: "./src/icons/guitar.svg",
+    controlImg: "./src/icons/guitar.svg",
   },
   {
     slideImg: "./picts/guitars/ej_strat.jpg",

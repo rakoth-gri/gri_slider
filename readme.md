@@ -116,6 +116,8 @@ interface I_LIST_ITEM {
 }
 ```
 
+**To optimize initial loading, all slide images use lazy loading method**
+
 #### 2.2 'csssd' - the optional prop for customizing styles of main container (.gri-slider). This is a javascript CSS_Style_Declaration object:
 
 ```javascript
@@ -199,7 +201,7 @@ Types of values for CSS-prop:
 
 - **panel** --> ("renderDots" | "renderControls")[]
 
-By the way, if the value is ['renderControls'] - you can also specify the icon for the control button: simply indicate the path for **controlImg** prop in zero-index item of **list** prop:
+By the way, if the value is ['renderControls'] - you can also specify the icon for the control button: simply indicate the path for **controlImg** prop in zero-index item of **list** prop array:
 
 ```javascript
 const MY_SLIDE_LIST = [
@@ -307,7 +309,17 @@ file **index.min.css** already contains css for iconMoon font. Pass each pair to
 
 #### 4. Customizing styles of gri-slider:
 
-You can always customize styles by modifying the styles attached in pre-pared **index.min.css** file
+You can always customize styles by modifying the styles attached in pre-pared **index.min.css** file or adding
+your own below the CSS cascade. <br>
+Important: almost all DOM-elements have **CSS-Class level specificity**, except image elements. To redefine the styles
+of the image element - in addition to the class, add a selector by tag:
+
+```css
+  /* We provide 0 0 1 1 specificity */
+  .myNewClass img {
+  color: var(--app-myButton-color);
+  }
+```
 
 #### 5. Media-querries grid:
 
