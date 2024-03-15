@@ -293,7 +293,7 @@ new AutoSlider({
 });
 ```
 
-file **index.min.css** already contains css for iconMoon font. Pass each pair to 'arrows' property of your slider instance (see examples above):
+file **index.min.css** already includes css for several iconMoon arrow pairs. Pass any pair to **'arrows'** prop of your slider instance (see examples above):
 
 ```html
 <!-- 1 -->
