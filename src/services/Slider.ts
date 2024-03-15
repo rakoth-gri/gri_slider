@@ -40,6 +40,7 @@ class Slider {
     panel = undefined,
     imgInSlideCount = 1,
     arrows,
+    lazyLoad,
   }: T_SLIDER_PARAMS) {
     // DOM-ELEMS
     this.$sliderBody = null;
@@ -61,19 +62,17 @@ class Slider {
     this.isGrabbing = false;
     this.startCursorPos = null;
     this.endCursorPos = null;
-    // HANDLE EMPTY ARRAY
-    if (!list.length)
-      throw new Error(
-        "You should pass non-empty Array as a value of the `list` param!"
-      );
-    // METHS
+    // @ts-ignore
+    if (!(this.list?.length)) return console.error("YOU SHOULD PASS NON_EMPTY SLIDES ARRAY AS A VALUE OF 'LIST' PROP!")        
+    // METHS    
     this.builder(
       this.list,
       this.$slider,
       this.csssd,
       this.panel,
       this.imgInSlideCount,
-      this.arrows
+      this.arrows,
+      lazyLoad
     );
   }
 
@@ -83,11 +82,12 @@ class Slider {
     csssd: Partial<CSSStyleDeclaration>,
     panel: T_PANEL[] | undefined,
     imgInSlideCount: number,
-    arrows: T_ARROWS | undefined
+    arrows: T_ARROWS | undefined,
+    lazyload: true | undefined
   ) {
     // order to invoke:
     // 0
-    this.render(slider, list, arrows);
+    this.render(slider, list, arrows, lazyload);
     // 1
     arrows && this.renderArrows(arrows);
     // 2
@@ -102,17 +102,17 @@ class Slider {
     // 4
     this.checkOptionsStyles(csssd);
     // 5
-    this.addClickEventToSlider();
+    lazyload && this.observer();
     // 6
-    this.resize();
+    this.disableContextMenu();
     // 7
-    this.addSwipeEventForDesktop();
+    this.addClickEventToSlider();
     // 8
     this.addSwipeEventForMobile();
     // 9
-    this.observer();
+    this.addSwipeEventForDesktop();
     // 10
-    this.disableContextMenu();
+    this.resize();
   }
 
   // RENDERING --------------------------------
@@ -120,7 +120,8 @@ class Slider {
   render(
     slider: HTMLDivElement,
     list: T_SLIDELIST_ITEM[][],
-    arrows: T_ARROWS | undefined
+    arrows: T_ARROWS | undefined,
+    lazyLoad: true | undefined
   ) {
     slider.innerHTML = `
     ${arrows ? `<div class="gri-slider__prev"></div>` : ""}
@@ -133,7 +134,13 @@ class Slider {
                   .map(
                     ({ slideImg, comment }) => `
                     <article class="gri-slider__img">
-                      <img src="${i === 0 ? slideImg : ""}" data-src='${slideImg}'/>
+                      ${
+                        lazyLoad
+                        ?
+                        `<img src="${i === 0 ? slideImg : ""}" data-src='${slideImg}'/>`
+                        :
+                        `<img src="${slideImg}" alt="check 'src'"/>`
+                      }                      
                       <span class="gri-slider__img_index"> ${
                         comment || ``
                       }</span>
@@ -405,11 +412,11 @@ class Slider {
     let cb: IntersectionObserverCallback = (entries, observer) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          let img = entry.target.children[0] as HTMLImageElement
-          let src = img.dataset.src as string;                  
-          img.src = src
-          observer.unobserve(entry.target)
-        }        
+          let img = entry.target.children[0] as HTMLImageElement;
+          let src = img.dataset.src as string;
+          img.src = src;
+          observer.unobserve(entry.target);
+        }
       });
     };
 
@@ -437,8 +444,9 @@ export default class AutoSlider extends Slider {
     imgInSlideCount,
     delay = 1800,
     arrows,
-  }: T_SLIDER_PARAMS) {
-    super({ csssd, list, panel, imgInSlideCount, arrows });
+    lazyLoad,
+  }: T_SLIDER_PARAMS) {    
+    super({ csssd, list, panel, imgInSlideCount, arrows, lazyLoad });
     // LOGICAL
     this.isAutoSlider = isAutoSlider;
     this.intervalId = undefined;
@@ -451,7 +459,7 @@ export default class AutoSlider extends Slider {
   autoSlider(delay: number) {
     this.intervalId = setInterval(() => {
       this.count++;
-      this.prepareForMoveTrack()
+      this.prepareForMoveTrack();
     }, delay);
   }
 

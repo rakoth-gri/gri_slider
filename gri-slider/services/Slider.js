@@ -23,7 +23,8 @@ var EVENT_SELECTORS = [
 var Slider = (function () {
     function Slider(_a) {
         var _this = this;
-        var list = _a.list, _b = _a.csssd, csssd = _b === void 0 ? {} : _b, _c = _a.panel, panel = _c === void 0 ? undefined : _c, _d = _a.imgInSlideCount, imgInSlideCount = _d === void 0 ? 1 : _d, arrows = _a.arrows;
+        var list = _a.list, _b = _a.csssd, csssd = _b === void 0 ? {} : _b, _c = _a.panel, panel = _c === void 0 ? undefined : _c, _d = _a.imgInSlideCount, imgInSlideCount = _d === void 0 ? 1 : _d, arrows = _a.arrows, lazyLoad = _a.lazyLoad;
+        var _e;
         this.trackStyles = function (track, images, list, imgInSlideCount) {
             _this.width = _this.$sliderBody.offsetWidth;
             images.forEach(function (img) {
@@ -102,28 +103,32 @@ var Slider = (function () {
         this.isGrabbing = false;
         this.startCursorPos = null;
         this.endCursorPos = null;
-        if (!list.length)
-            throw new Error("You should pass non-empty Array as a value of the `list` param!");
-        this.builder(this.list, this.$slider, this.csssd, this.panel, this.imgInSlideCount, this.arrows);
+        if (!((_e = this.list) === null || _e === void 0 ? void 0 : _e.length))
+            return console.error("YOU SHOULD PASS NON_EMPTY SLIDES ARRAY AS A VALUE OF 'LIST' PROP!");
+        this.builder(this.list, this.$slider, this.csssd, this.panel, this.imgInSlideCount, this.arrows, lazyLoad);
     }
-    Slider.prototype.builder = function (list, slider, csssd, panel, imgInSlideCount, arrows) {
-        this.render(slider, list, arrows);
+    Slider.prototype.builder = function (list, slider, csssd, panel, imgInSlideCount, arrows, lazyload) {
+        this.render(slider, list, arrows, lazyload);
         arrows && this.renderArrows(arrows);
         panel && this[panel[0]](slider, list);
         this.trackStyles(this.$track, this.$imageBlocks, list, imgInSlideCount);
         this.checkOptionsStyles(csssd);
-        this.addClickEventToSlider();
-        this.resize();
-        this.addSwipeEventForDesktop();
-        this.addSwipeEventForMobile();
-        this.observer();
+        lazyload && this.observer();
         this.disableContextMenu();
+        this.addClickEventToSlider();
+        this.addSwipeEventForMobile();
+        this.addSwipeEventForDesktop();
+        this.resize();
     };
-    Slider.prototype.render = function (slider, list, arrows) {
+    Slider.prototype.render = function (slider, list, arrows, lazyLoad) {
         slider.innerHTML = "\n    ".concat(arrows ? "<div class=\"gri-slider__prev\"></div>" : "", "\n    <div class=\"gri-slider__body\">\n        <div class=\"gri-slider__track\">\n            ").concat(iterator(list, function (slidesArr, i) { return "\n                ".concat(slidesArr
             .map(function (_a) {
             var slideImg = _a.slideImg, comment = _a.comment;
-            return "\n                    <article class=\"gri-slider__img\">\n                      <img src=\"".concat(i === 0 ? slideImg : "", "\" data-src='").concat(slideImg, "'/>\n                      <span class=\"gri-slider__img_index\"> ").concat(comment || "", "</span>\n                    </article>");
+            return "\n                    <article class=\"gri-slider__img\">\n                      ".concat(lazyLoad
+                ?
+                    "<img src=\"".concat(i === 0 ? slideImg : "", "\" data-src='").concat(slideImg, "'/>")
+                :
+                    "<img src=\"".concat(slideImg, "\" alt=\"check 'src'\"/>"), "                      \n                      <span class=\"gri-slider__img_index\"> ").concat(comment || "", "</span>\n                    </article>");
         })
             .join(""), "              \n                "); }, "map"), "              \n        </div>    \n    </div>    \n    ").concat(arrows ? "<div class=\"gri-slider__next\"></div>" : "", "             \n    ");
         this.$sliderBody = document.querySelector(".gri-slider__body");
@@ -232,8 +237,8 @@ var Slider = (function () {
 var AutoSlider = (function (_super) {
     __extends(AutoSlider, _super);
     function AutoSlider(_a) {
-        var _b = _a.isAutoSlider, isAutoSlider = _b === void 0 ? false : _b, list = _a.list, csssd = _a.csssd, panel = _a.panel, imgInSlideCount = _a.imgInSlideCount, _c = _a.delay, delay = _c === void 0 ? 1800 : _c, arrows = _a.arrows;
-        var _this = _super.call(this, { csssd: csssd, list: list, panel: panel, imgInSlideCount: imgInSlideCount, arrows: arrows }) || this;
+        var _b = _a.isAutoSlider, isAutoSlider = _b === void 0 ? false : _b, list = _a.list, csssd = _a.csssd, panel = _a.panel, imgInSlideCount = _a.imgInSlideCount, _c = _a.delay, delay = _c === void 0 ? 1800 : _c, arrows = _a.arrows, lazyLoad = _a.lazyLoad;
+        var _this = _super.call(this, { csssd: csssd, list: list, panel: panel, imgInSlideCount: imgInSlideCount, arrows: arrows, lazyLoad: lazyLoad }) || this;
         _this.addMouseEventToSliderHandler = function (e) {
             if (e.type === "mouseenter") {
                 clearInterval(_this.intervalId);

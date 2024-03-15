@@ -116,8 +116,6 @@ interface I_LIST_ITEM {
 }
 ```
 
-**To optimize initial loading, all slide images use lazy loading method**
-
 #### 2.2 'csssd' - the optional prop for customizing styles of main container (.gri-slider). This is a javascript CSS_Style_Declaration object:
 
 ```javascript
@@ -267,12 +265,14 @@ new AutoSlider({
 });
 ```
 
+**By default: undefined**
+
 - EXAMPLE WITH [IcoMoon icons](https://icomoon.io/app/#/select/library "IcoMoon icons"):
 
 ```javascript
 new AutoSlider({
   list: MY_SLIDE_LIST, // required
-  // Pass HTML-code of your favourite svg, icon-font resourses in SLider prop object:
+  // Pass HTML-code of your favourite icon as a value of arrows property object:
   arrows: {
     prev: `<span class="icon-circle-left"></span>`,
     next: `<span class="icon-circle-right"></span>`,
@@ -280,17 +280,26 @@ new AutoSlider({
 });
 ```
 
-- EXAMPLE WITH IMG TAG:
+- EXAMPLE WITH 'img' tag:
 
 ```javascript
 new AutoSlider({
   list: MY_SLIDE_LIST, // required
-  // Pass HTML-code of your favourite svg, icon-font resourses in SLider prop object:
+  // Pass HTML-string as a value of arrows property object:
   arrows: {
     prev: `<img src="./myImages/prev.png"/>`,
     next: `<img src="./myImages/next.png"/>`,
   }, // optional
 });
+```
+
+Typing **'arrows'** prop:
+
+```typescript
+type T_ARROWS = {
+  prev: string;
+  next: string;
+};
 ```
 
 file **index.min.css** already includes css for several iconMoon arrow pairs. Pass any pair to **'arrows'** prop of your slider instance (see examples above):
@@ -307,7 +316,34 @@ file **index.min.css** already includes css for several iconMoon arrow pairs. Pa
 <span class="icon-circle-right"></span>
 ```
 
-#### 4. Customizing styles of gri-slider:
+#### 2.8 'lazyLoad' - the optional property, to optimize initial loading of slide images.
+
+```javascript
+new AutoSlider({
+  list: MY_SLIDE_LIST, // required
+  // connect your favourite svg or icon-font resourses to SLider
+  lazyLoad: true, // optional
+});
+```
+
+- Example with no lazy images:
+
+```javascript
+// disabled 'lazyLoad' property:
+new AutoSlider({
+  list: MY_SLIDE_LIST, // required
+});
+```
+
+Typing **'lazyLoad'** prop:
+
+```typescript
+type T_LazyLoad = true | undefined;
+```
+
+**By default: undefined**
+
+#### 3. Customizing styles of gri-slider:
 
 You can always customize styles by modifying the styles attached in pre-pared **index.min.css** file or adding
 your own below the CSS cascade. <br>
@@ -315,13 +351,13 @@ Important: almost all DOM-elements have **CSS-Class level specificity**, except 
 of the image element - in addition to the class, add a selector by tag:
 
 ```css
-  /* We provide 0 0 1 1 specificity */
-  .myNewClass img {
+/* We provide 0 0 1 1 specificity */
+.myNewClass img {
   color: var(--app-myButton-color);
-  }
+}
 ```
 
-#### 5. Media-querries grid:
+#### 4. Media-querries grid:
 
 The media-querries grid, suggested in pre-prepared **index.min.css** file:
 
@@ -347,4 +383,4 @@ The media-querries grid, suggested in pre-prepared **index.min.css** file:
 }
 ```
 
-#### 6. The main Slider class includes 'resize' method, which automatically adjusts the carousel to current screen resolution!
+#### 5. The main Slider class includes 'resize' method, which automatically adjusts the carousel to current screen resolution!

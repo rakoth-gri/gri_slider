@@ -23,4 +23,5 @@ export type T_SLIDER_PARAMS = {
   imgInSlideCount?: number,
   delay?: number,
   arrows?: T_ARROWS
+  lazyLoad?: true
 }

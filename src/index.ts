@@ -12,7 +12,7 @@ const SLIDE_LIST: T_SLIDELIST_ITEM[] = [
   {
     slideImg: "./picts/guitars/ej_strat.jpg",
     comment: "Eric Johnson's <b>`DESERT ROSE`</b> Fender Strat",
-  },  
+  },
   {
     slideImg: "./picts/guitars/sv_JEM777.jpg",
     comment: "Steve Vai's <strong>` PRAYING `</strong> Ibanez JEM777",
@@ -38,4 +38,5 @@ new AutoSlider({
     prev: `<span class="material-symbols-outlined"> arrow_left_alt </span>`,
     next: `<span class="material-symbols-outlined"> arrow_right_alt </span>`,
   },
+  lazyLoad: true,
 });
