@@ -22,3 +22,9 @@ export function nested(arr, cnt) {
     }
     return list;
 }
+export var EVENT_SELECTORS = [
+    ".gri-slider__prev",
+    ".gri-slider__next",
+    ".gri-slider__panel_btn",
+    ".gri-slider__panel_dot",
+];

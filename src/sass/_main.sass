@@ -38,7 +38,7 @@
             opacity: 1               
 
     &__track
-        will-change: transform, opacity        
+        will-change: transform, transition        
         display: flex       
         transition: 0.25s all ease           
 
@@ -54,13 +54,13 @@
             @include size-mixin
             object-fit: cover                  
 
-        &_index            
+        &_comment           
             text-transform: uppercase           
             position: absolute
             width: 100%
             bottom: 0%
             left: 0%
-            background: rgba(0,0,0, .28)
-            backdrop-filter: blur(1.1px)
+            background: rgba(0,0,0, .5)
+            backdrop-filter: blur(1.16px)
             padding: 1rem
             text-align: right  
