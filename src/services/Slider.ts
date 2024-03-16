@@ -1,21 +1,18 @@
-import { toggleClass, iterator, checkCount, nested } from "../utils/utils.js";
+import {
+  iterator,
+  checkCount,
+  nested,
+  EVENT_SELECTORS,
+} from "../utils/utils.js";
 // TYPES--
 import {
-  T_SELECTORS,
   T_SLIDELIST_ITEM,
   T_PANEL,
   T_SLIDER_PARAMS,
   T_ARROWS,
 } from "../types/types.js";
 
-const EVENT_SELECTORS: T_SELECTORS[] = [
-  ".gri-slider__prev",
-  ".gri-slider__next",
-  ".gri-slider__panel_btn",
-  ".gri-slider__panel_dot",
-];
-
-class Slider {
+export default class Slider {
   list: T_SLIDELIST_ITEM[][];
   csssd: Partial<CSSStyleDeclaration>;
   $sliderBody: HTMLDivElement | null;
@@ -62,9 +59,12 @@ class Slider {
     this.isGrabbing = false;
     this.startCursorPos = null;
     this.endCursorPos = null;
-    // @ts-ignore
-    if (!(this.list?.length)) return console.error("YOU SHOULD PASS NON_EMPTY SLIDES ARRAY AS A VALUE OF 'LIST' PROP!")        
-    // METHS    
+    if (!this.list?.length)
+      // @ts-ignore
+      return console.error(
+        "YOU SHOULD PASS NON_EMPTY SLIDES ARRAY AS A VALUE OF 'LIST' PROP!"
+      );
+    // METHS
     this.builder(
       this.list,
       this.$slider,
@@ -111,8 +111,6 @@ class Slider {
     this.addSwipeEventForMobile();
     // 9
     this.addSwipeEventForDesktop();
-    // 10
-    this.resize();
   }
 
   // RENDERING --------------------------------
@@ -136,12 +134,12 @@ class Slider {
                     <article class="gri-slider__img">
                       ${
                         lazyLoad
-                        ?
-                        `<img src="${i === 0 ? slideImg : ""}" data-src='${slideImg}'/>`
-                        :
-                        `<img src="${slideImg}" alt="check 'src'"/>`
+                          ? `<img src="${
+                              i === 0 ? slideImg : ""
+                            }" data-src='${slideImg}'/>`
+                          : `<img src="${slideImg}" alt="check 'src'"/>`
                       }                      
-                      <span class="gri-slider__img_index"> ${
+                      <span class="gri-slider__img_comment"> ${
                         comment || ``
                       }</span>
                     </article>`
@@ -272,17 +270,6 @@ class Slider {
     );
   }
 
-  resize() {
-    window.addEventListener("resize", () =>
-      this.trackStyles(
-        this.$track as HTMLDivElement,
-        this.$imageBlocks as NodeListOf<HTMLDivElement>,
-        this.list,
-        this.imgInSlideCount
-      )
-    );
-  }
-
   // ACTIONS ------------------------------------------
 
   prepareForMoveTrack() {
@@ -346,11 +333,11 @@ class Slider {
     const diff =
       (this.endCursorPos as number) - (this.startCursorPos as number);
 
-    if (diff > 0 && diff > 70) {
+    if (diff > 0 && diff > 30) {
       this.count--;
     }
 
-    if (diff < 0 && diff < -70) {
+    if (diff < 0 && diff < -30) {
       this.count++;
     }
 
@@ -406,7 +393,7 @@ class Slider {
     let options = {
       root: this.$sliderBody,
       rootMargin: "0px",
-      threshold: 0.5,
+      threshold: 0.05,
     };
 
     let cb: IntersectionObserverCallback = (entries, observer) => {
@@ -426,60 +413,5 @@ class Slider {
           i > 0 && new IntersectionObserver(cb, options).observe(block)
       );
     }
-  }
-}
-
-// CLASS_INHERITER
-
-export default class AutoSlider extends Slider {
-  isAutoSlider: boolean;
-  intervalId: undefined | number;
-  delay: number;
-
-  constructor({
-    isAutoSlider = false,
-    list,
-    csssd,
-    panel,
-    imgInSlideCount,
-    delay = 1800,
-    arrows,
-    lazyLoad,
-  }: T_SLIDER_PARAMS) {    
-    super({ csssd, list, panel, imgInSlideCount, arrows, lazyLoad });
-    // LOGICAL
-    this.isAutoSlider = isAutoSlider;
-    this.intervalId = undefined;
-    this.delay = delay;
-    // METHS
-    arrows && this.addMouseEventToSlider();
-    this.isAutoSlider && this.autoSlider(this.delay);
-  }
-
-  autoSlider(delay: number) {
-    this.intervalId = setInterval(() => {
-      this.count++;
-      this.prepareForMoveTrack();
-    }, delay);
-  }
-
-  addMouseEventToSliderHandler = (e: Event) => {
-    if (e.type === "mouseenter") {
-      clearInterval(this.intervalId);
-      return toggleClass(EVENT_SELECTORS.slice(0, 2));
-    }
-    toggleClass(EVENT_SELECTORS.slice(0, 2));
-    this.isAutoSlider && this.autoSlider(this.delay);
-  };
-
-  addMouseEventToSlider() {
-    this.$slider.addEventListener(
-      "mouseenter",
-      this.addMouseEventToSliderHandler
-    );
-    this.$slider.addEventListener(
-      "mouseleave",
-      this.addMouseEventToSliderHandler
-    );
   }
 }

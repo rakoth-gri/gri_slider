@@ -35,5 +35,10 @@ export function nested<T>(arr: T[], cnt: number) {
 }
 
 
-
+export const EVENT_SELECTORS: T_SELECTORS[] = [
+  ".gri-slider__prev",
+  ".gri-slider__next",
+  ".gri-slider__panel_btn",
+  ".gri-slider__panel_dot",
+];
 

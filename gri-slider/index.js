@@ -1,1 +1,1 @@
-export {default} from "./services/Slider.js"
+export {default} from "./services/AutoSlider.js"
