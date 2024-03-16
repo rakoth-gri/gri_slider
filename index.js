@@ -36,7 +36,7 @@ const options = {
     prev: `<span class="icon-undo"></span>`,
     next: `<span class="icon-redo"></span>`,
   },
-  lazyLoad: true
+  lazyLoad: true,
 };
 
 new AutoSlider(options);
